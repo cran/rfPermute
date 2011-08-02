@@ -1,0 +1,8 @@
+b987e38cf355c5657bc61282a73f2e2f *DESCRIPTION
+c4f007733f157702bb81059613a5400f *NAMESPACE
+3ea66ade42bf6758d26f213c6acdb27b *R/plot.rfPermute.R
+f1ff6b5ef89e6cf6ed0437d5ba0f6bfb *R/rfPermute.R
+c7452009a54b695add9f10cf5b9829b2 *R/rfPermute.default.R
+0e9d805de618da4dd9267d1c59a055d1 *R/rfPermute.formula.R
+cc52d51eeebd05b3d7d7f0b4ca551dd9 *man/plot.rfPermute.Rd
+493599108e0d804e0b3350a2204647b0 *man/rfPermute.Rd
