@@ -1,3 +1,5 @@
+export(plot.rfPermute)
 export(rfPermute)
+S3method(plot,rfPermute)
 S3method(rfPermute,default)
 S3method(rfPermute,formula)

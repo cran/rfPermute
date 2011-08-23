@@ -2,7 +2,7 @@
 \alias{plot.rfPermute}
 \title{Plot Random Forest importance null distributions.}
 \usage{
-  \method{plot}{rfPermute} (x, ...)
+  plot.rfPermute(x, ...)
 }
 \arguments{
   \item{x}{An object produced by a call to

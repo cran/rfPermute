@@ -15,7 +15,7 @@
 }
 \arguments{
   \item{x,y,formula,data,subset,na.action,\dots}{See
-  \code{?randomForest} for definitions.}
+  \code{link{randomForest}} for definitions.}
 
   \item{nrep}{Number of permutation replicates to run to
   construct null distribution and calculate p-values
@@ -70,13 +70,15 @@ print(ozone.rfP$importance)  # The original importance metrics.
 print(ozone.rfP$null.dist$pval) # The p-values for each variable.
 plot(ozone.rfP) # Plot the null distributions and observed values.
 
+\dontrun{
 # A classification model with random dataset
-# and using two cores and sockets through 'snow'
-\dontrun{set.seed(17)}
-\dontrun{x <- matrix(runif(500), 100)}
-\dontrun{y <- gl(2, 50, labels = LETTERS[1:2])}
-\dontrun{ran.rfP <- rfPermute(x, y, ntree = 500, nrep = 100, clust.opts = list(spec = 2, type = "SOCK"))}
-\dontrun{print(ran.rfP$null.dist$pval)}
+# using two cores with the \\code{snow} package
+set.seed(17)
+x <- matrix(runif(500), 100)
+y <- gl(2, 50, labels = LETTERS[1:2])
+ran.rfP <- rfPermute(x, y, ntree = 500, nrep = 100, clust.opts = list(spec = 2, type = "SOCK"))
+print(ran.rfP$null.dist$pval)
+}
 }
 \author{
   Eric Archer <eric.archer@noaa.gov>
