@@ -4,7 +4,8 @@
 #' call to \code{rfPermute}.
 #'
 #' @title Plot Random Forest importance null distributions.
-#' @method plot rfPermute
+#' @export plot.rfPermute
+#' @S3method plot rfPermute
 #' @param x An object produced by a call to \code{rfPermute}.
 #' @param ... Optional graphical arguments to be sent to \code{par}.
 #' @note The function will generate an individual plot for
