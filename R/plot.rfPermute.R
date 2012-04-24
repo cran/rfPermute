@@ -6,30 +6,44 @@
 #' @title Plot Random Forest importance null distributions.
 #' @export plot.rfPermute
 #' @S3method plot rfPermute
+#' @usage \method{plot}{rfPermute}(x, imp.type, ...)
 #' @param x An object produced by a call to \code{rfPermute}.
+#' @param imp.type Either a numeric or character vector giving the 
+#'   importance metric(s) to plot.
 #' @param ... Optional graphical arguments to be sent to \code{par}.
 #' @note The function will generate an individual plot for
 #'   each variable and importance metric on the default graphics
 #'   device.
 #' @author Eric Archer <eric.archer@@noaa.gov>
 
-plot.rfPermute <- function(x, ...) {
+plot.rfPermute <- function(x, imp.type, ...) {
   # Creates density plots of the null distributions for each predictor
   #   and both importance types.  A vertical line marks the observed value. 
   #
   # 'x': an object of class 'rfPermute' with a 'null.dist' element
+  # 'imp.type': either a character or numeric vector of the importance metrics to plot
   #
-  #  8/3/2011
+  #  8/31/2011
 
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
+  if(is.character(imp.type)) {
+   not.found <- imp.type[!(imp.type %in% names(x$null.dist))]
+   if(length(not.found) > 0) {
+     imp <- paste(not.found, collapse = ", ")
+     stop(paste("imp.type: ", imp, " not in rfPermute object 'x'", sep = ""))
+    }
+  } else if(is.numeric(imp.type)) {
+    if(!all(imp.type %in% 1:2)) stop("some 'imp.type' out of range")
+  } else stop("'imp.type' is not a character or numeric vector")
+  
   importance <- x$importance[, c(ncol(x$importance) - 1, ncol(x$importance))]
   op <- par(..., no.readonly = TRUE)
-  for(pred in rownames(x$null.dist$pval)) {
-    for(imp.type in 1:2) {
-      n <- x$null.dist[[imp.type]][, pred]
-      o <- importance[pred, imp.type]
-      xlab <- names(x$null.dist)[imp.type]
-      pval <- x$null.dist$pval[pred, imp.type]
+  for(pred in rownames(importance)) {
+    for(imp in imp.type) {
+      n <- x$null.dist[[imp]][, pred]
+      o <- importance[pred, imp]
+      xlab <- ifelse(is.character(imp), imp, names(x$null.dist)[imp])
+      pval <- x$null.dist$pval[pred, imp]
       main <- c(paste("Variable:", pred), paste("P(null >= obs) =", sprintf("%0.3f", pval)))
       plot(density(n), xlim = range(c(n, o)), xlab = xlab, main = main)
       abline(v = o, lwd = 2)

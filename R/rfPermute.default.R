@@ -4,7 +4,7 @@
 rfPermute.default <- function(x, y, ..., nrep = 100, clust.opts = NULL) {  
   # Takes same arguments as 'randomForest.default', plus
   #   'nrep': number of permutation replicates
-  #   'clust.opts' : list of options to set up clusters for package 'snow' if available
+  #   'clust.opts' : list of options to set up clusters for package 'parallel'
   #
   # Returns 'randomForest' object with:
   #   'null.dist' : 3 element named list with null distribution matrices
@@ -42,16 +42,25 @@ rfPermute.default <- function(x, y, ..., nrep = 100, clust.opts = NULL) {
     })
   }
   
-  # setup clusters if 'clust.opt' provided and package 'snow' is available
-  importance.perm <- if(!is.null(clust.opts) & require(snow, quietly = TRUE)) {
-    clust <- do.call(makeCluster, clust.opts) 
+  # setup clusters if 'clust.opt' provided
+  importance.perm <- if(!is.null(clust.opts)) {
+    require(parallel, quietly = TRUE)
+    
+    clust <- if(is.vector(clust.opts) & length(clust.opts) == 1 & is.integer(clust.opts)) {
+      makeCluster(clust.opts)
+    } else if(is.list(clust.opts)) {
+      do.call(makeCluster, clust.opts)
+    } else {
+      makeCluster(detectCores())
+    }
+    
     tryCatch(
       if(length(clust) == 1) { # if only one cluster was specified, do normal permutation
         stopCluster(clust)
         permute.func(nrep, rf.call)
       } else {
         clusterEvalQ(clust, library(randomForest))
-        clusterSetupRNG(clust)
+        clusterSetRNGStream(clust)
         rep.split <- clusterSplit(clust, 1:nrep)
         result <- clusterApply(clust, sapply(rep.split, length), permute.func, rf.call = rf.call)
         stopCluster(clust) 

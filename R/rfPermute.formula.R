@@ -4,7 +4,6 @@
 rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100, clust.opts = NULL) {
   # Takes same arguments as 'randomForest.formula', plus
   #   'nrep': number of permutation replicates
-  #   'clust.opts' : list of options to set up clusters for package 'snow' if available
   #
   # Returns 'randomForest' object with:
   #   'null.dist' : 3 element named list with null distribution matrices
@@ -17,7 +16,7 @@ rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.
 
   stopifnot(require(randomForest, quietly = TRUE))
   if (!inherits(formula, "formula")) stop("method is only for formula objects")
-  m <- match.call(expand = FALSE)
+  m <- match.call(expand.dots = FALSE)
   if (any(c("xtest", "ytest") %in% names(m))) stop("xtest/ytest not supported through the formula interface")
   
   # extract formula terms
