@@ -7,11 +7,11 @@
   rfPermute(x, ...)
 
   \method{rfPermute}{default}(x, y, \dots, nrep = 100,
-  clust.opts = NULL)
+    clust.opts = NULL)
 
   \method{rfPermute}{formula}(formula, data = NULL, \dots,
-  subset, na.action = na.fail, nrep = 100, clust.opts =
-  NULL)
+    subset, na.action = na.fail, nrep = 100, clust.opts =
+    NULL)
 }
 \arguments{
   \item{x,y,formula,data,subset,na.action,\dots}{See
@@ -23,9 +23,9 @@
 
   \item{clust.opts}{List of options for setting up clusters
   to be passed to the \code{make.Cluster} function in the
-  \code{snow} package if multiple processors are available.
-  If not specified or \code{NULL} then \code{snow} is not
-  used.}
+  \code{parallel} package if multiple processors are
+  available. If not specified or \code{NULL} then
+  \code{parallel} is not used.}
 }
 \value{
   An \code{rfPermute} object which contains all of the
@@ -40,7 +40,7 @@
   each predictor variable and one column for each
   importance metric. The values are the permutation
   p-values for the respective importance metrics calculated
-  as: \eqn{(N(rep >= obs) + 1) / (nrep + 1)}. }
+  as: \eqn{(N(rep >= obs) + 1) / (nrep + 1)}.  }
 }
 \description{
   Estimate significance of importance metrics for a Random
@@ -56,29 +56,29 @@
   the response variable 'nrep' times, with a new Random
   Forest model built for each permutation step. If multiple
   processors are available and the job can be distributed
-  amongst them using the package \code{snow}, the cluster
-  configuration can be specified with the \code{clust.opt}
-  argument.  If \code{snow} is not installed or the
-  clusters cannot be allocated, then \code{rfPermute} will
-  operate as normal on a single core.
+  amongst them using the package \code{parallel}, the
+  cluster configuration can be specified with the
+  \code{clust.opt} argument.  If the clusters cannot be
+  allocated, then \code{rfPermute} will operate as normal
+  on a single core.
 }
 \examples{
 # A regression model using the ozone example
-data(airquality)
-ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 500, na.action = na.omit, nrep = 100)
-print(ozone.rfP$importance)  # The original importance metrics.
-print(ozone.rfP$null.dist$pval) # The p-values for each variable.
-plot(ozone.rfP) # Plot the null distributions and observed values.
+  data(airquality)
+  ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 500, na.action = na.omit, nrep = 100)
+  print(ozone.rfP$importance)  # The original importance metrics.
+  print(ozone.rfP$null.dist$pval) # The p-values for each variable.
+  plot(ozone.rfP, imp.type = 1) # Plot the null distributions and observed values.
 
-\dontrun{
-# A classification model with random dataset
-# using two cores with the \\code{snow} package
-set.seed(17)
-x <- matrix(runif(500), 100)
-y <- gl(2, 50, labels = LETTERS[1:2])
-ran.rfP <- rfPermute(x, y, ntree = 500, nrep = 100, clust.opts = list(spec = 2, type = "SOCK"))
-print(ran.rfP$null.dist$pval)
-}
+  \dontrun{
+    # A classification model with random dataset
+    # using two cores with the \\code{parallel} package
+    set.seed(17)
+    x <- matrix(runif(500), 100)
+    y <- gl(2, 50, labels = LETTERS[1:2])
+    ran.rfP <- rfPermute(x, y, ntree = 500, nrep = 100, clust.opts = 2)
+    print(ran.rfP$null.dist$pval)
+  }
 }
 \author{
   Eric Archer <eric.archer@noaa.gov>
@@ -88,9 +88,6 @@ print(ran.rfP$null.dist$pval)
   distributions from the \code{rfPermute} object
 
   package \code{\link{randomForest}}
-
-  \code{\link[snow]{makeCluster}} in the \code{snow}
-  package
 }
 \keyword{classif}
 \keyword{regression}
