@@ -1,8 +1,8 @@
 Package: rfPermute
 Type: Package
 Title: Estimate permutation p-values for importance metrics.
-Version: 1.1
-Date: 2012-04-24
+Version: 1.2
+Date: 2012-05-30
 Author: Eric Archer
 Maintainer: Eric Archer <eric.archer@noaa.gov>
 Depends: R (>= 2.15.0), randomForest
@@ -15,6 +15,6 @@ License: GPL (>= 2)
 LazyLoad: yes
 Collate: 'plot.rfPermute.R' 'rfPermute.R' 'rfPermute.default.R'
         'rfPermute.formula.R'
-Packaged: 2012-04-26 15:22:20 UTC; eia
+Packaged: 2012-05-31 05:45:33 UTC; eia
 Repository: CRAN
-Date/Publication: 2012-04-26 16:14:46
+Date/Publication: 2012-05-31 11:13:49
