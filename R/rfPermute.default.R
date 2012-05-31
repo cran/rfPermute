@@ -54,20 +54,17 @@ rfPermute.default <- function(x, y, ..., nrep = 100, clust.opts = NULL) {
       makeCluster(detectCores())
     }
     
-    tryCatch(
-      if(length(clust) == 1) { # if only one cluster was specified, do normal permutation
-        stopCluster(clust)
-        permute.func(nrep, rf.call)
-      } else {
-        clusterEvalQ(clust, library(randomForest))
-        clusterSetRNGStream(clust)
-        rep.split <- clusterSplit(clust, 1:nrep)
-        result <- clusterApply(clust, sapply(rep.split, length), permute.func, rf.call = rf.call)
-        stopCluster(clust) 
-        do.call(c, result)    
-      }, 
-      error = function(e) stopCluster(clust)
-    )
+    if(length(clust) == 1) { # if only one cluster was specified, do normal permutation
+      stopCluster(clust)
+      permute.func(nrep, rf.call)
+    } else {
+      clusterEvalQ(clust, library(randomForest))
+      clusterSetRNGStream(clust)
+      rep.split <- clusterSplit(clust, 1:nrep)
+      result <- clusterApply(clust, sapply(rep.split, length), permute.func, rf.call = rf.call)
+      stopCluster(clust) 
+      do.call(c, result)    
+    }
   } else {
     permute.func(nrep, rf.call)
   }
