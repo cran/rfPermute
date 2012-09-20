@@ -1,12 +1,12 @@
 Package: rfPermute
 Type: Package
 Title: Estimate permutation p-values for importance metrics.
-Version: 1.2
-Date: 2012-05-30
+Version: 1.4
+Date: 2012-09-20
 Author: Eric Archer
 Maintainer: Eric Archer <eric.archer@noaa.gov>
-Depends: R (>= 2.15.0), randomForest
-Suggests: parallel
+Depends: R (>= 2.15.1), randomForest
+Suggests: multicore
 Description: Estimate significance of importance metrics for a Random
         Forest model by permuting the response variable. Produces null
         distribution of importance metrics for each predictor variable
@@ -15,6 +15,6 @@ License: GPL (>= 2)
 LazyLoad: yes
 Collate: 'plot.rfPermute.R' 'rfPermute.R' 'rfPermute.default.R'
         'rfPermute.formula.R'
-Packaged: 2012-05-31 05:45:33 UTC; eia
+Packaged: 2012-09-21 07:34:40 UTC; eia
 Repository: CRAN
-Date/Publication: 2012-05-31 11:13:49
+Date/Publication: 2012-09-21 12:02:56
