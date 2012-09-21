@@ -1,7 +1,7 @@
 #' @rdname rfPermute
-#' @usage \method{rfPermute}{formula}(formula, data = NULL, \dots, subset, na.action = na.fail, nrep = 100, clust.opts = NULL)
+#' @usage \method{rfPermute}{formula}(formula, data = NULL, \dots, subset, na.action = na.fail, nrep = 100)
 
-rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100, clust.opts = NULL) {
+rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100) {
   # Takes same arguments as 'randomForest.formula', plus
   #   'nrep': number of permutation replicates
   #
@@ -12,7 +12,7 @@ rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.
   #      and 'pval' a matrix of p-values for each predictor (rows) on each
   #      importance metric (columns).
   #
-  #  7/29/2011
+  #  9/20/2012
 
   stopifnot(require(randomForest, quietly = TRUE))
   if (!inherits(formula, "formula")) stop("method is only for formula objects")
