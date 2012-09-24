@@ -1,9 +1,10 @@
 #' @rdname rfPermute
-#' @usage \method{rfPermute}{default}(x, y, \dots, nrep = 1000)
+#' @usage \method{rfPermute}{default}(x, y, \dots, nrep = 1000, num.cores = options("mc.cores"))
 
-rfPermute.default <- function(x, y, ..., nrep = 1000) {  
+rfPermute.default <- function(x, y, ..., nrep = 1000, num.cores = options("mc.cores")) {  
   # Takes same arguments as 'randomForest.default', plus
   #   'nrep': number of permutation replicates
+  #   'num.cores' : number of cores to use
   #
   # Returns 'randomForest' object with:
   #   'null.dist' : 3 element named list with null distribution matrices
@@ -17,7 +18,7 @@ rfPermute.default <- function(x, y, ..., nrep = 1000) {
   stopifnot(require(randomForest, quietly = TRUE))
   orig.call <- match.call()
   orig.call$nrep <- NULL
-  orig.call$clust.opts <- NULL
+  orig.call$num.cores <- NULL
   orig.call[[1]] <- as.name("randomForest")
   rf.call <- orig.call
   rf.call$x <- x
@@ -35,11 +36,17 @@ rfPermute.default <- function(x, y, ..., nrep = 1000) {
   
   # permutes 'y' in rf.call 'nrep' times and runs randomForest  
   if(nrep > 0) {
-    lapply.func <- if(require(multicore, quietly = T)) mclapply else lapply
+  	require(parallel, quietly = T)
+  	num.cores <- unlist(num.cores)
+  	num.cores <- if(is.null(num.cores)) detectCores() else min(detectCores(), num.cores)
+  	mc.cores <- options("mc.cores")
+  	options(mc.cores = num.cores)	
+  	lapply.func <- if(num.cores > 1) mclapply else lapply
     importance.perm <- lapply.func(1:nrep, function(i) {
       rf.call$y <- sample(rf.call$y)
       eval(rf.call)$importance
     })
+    options(mc.cores = mc.cores)
     
     # create null distribution for each variable  
     rf$null.dist <- sapply(imp.names, function(imp.type) {
