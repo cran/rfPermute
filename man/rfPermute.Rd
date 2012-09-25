@@ -6,10 +6,12 @@
 \usage{
   rfPermute(x, ...)
 
-  \method{rfPermute}{default}(x, y, \dots, nrep = 1000)
+  \method{rfPermute}{default}(x, y, \dots, nrep = 1000,
+    num.cores = options("mc.cores"))
 
   \method{rfPermute}{formula}(formula, data = NULL, \dots,
-    subset, na.action = na.fail, nrep = 100)
+    subset, na.action = na.fail, nrep = 100, num.cores =
+    options("mc.cores"))
 }
 \arguments{
   \item{x,y,formula,data,subset,na.action,\dots}{See
@@ -18,6 +20,13 @@
   \item{nrep}{Number of permutation replicates to run to
   construct null distribution and calculate p-values
   (default = 100).}
+
+  \item{num.cores}{Number of cores to use for permutations.
+  Default will use the value currently set in the MC_CORES
+  environment variable, or if that is unset, then the
+  maximum number available as reported by
+  \code{\link{detectCores}} in the \code{\link{parallel}}
+  package.}
 }
 \value{
   An \code{rfPermute} object which contains all of the
@@ -47,9 +56,10 @@
   of variable importance. \code{rfPermute} then permutes
   the response variable \code{nrep} times, with a new
   Random Forest model built for each permutation step. If
-  multiple processors are available, the permutations will
-  be distributed amongst them using the package
-  \code{multicore}.
+  multiple processors are available and \code{num.cores} is
+  NULL or a value greater than 1, the permutations will be
+  distributed amongst them using \code{\link{mclapply}} in
+  the \code{\link{parallel}} package.
 }
 \examples{
 # A regression model using the ozone example
