@@ -11,7 +11,7 @@
 #' @param imp.type Either a numeric or character vector giving the 
 #'   importance metric(s) to plot.
 #' @param ... Optional graphical arguments to be sent to \code{par}.
-#' @note The function will generate an individual plot for
+#' @details The function will generate an individual plot for
 #'   each variable and importance metric on the default graphics
 #'   device.
 #' @author Eric Archer <eric.archer@@noaa.gov>
@@ -33,7 +33,7 @@ plot.rfPermute <- function(x, imp.type, ...) {
      stop(paste("imp.type: ", imp, " not in rfPermute object 'x'", sep = ""))
     }
   } else if(is.numeric(imp.type)) {
-    if(!all(imp.type %in% 1:2)) stop("some 'imp.type' out of range")
+    if(!all(imp.type <= ncol(x$importance))) stop("some 'imp.type' out of range")
   } else stop("'imp.type' is not a character or numeric vector")
   
   importance <- x$importance[, c(ncol(x$importance) - 1, ncol(x$importance))]

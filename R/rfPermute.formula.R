@@ -1,7 +1,7 @@
 #' @rdname rfPermute
-#' @usage \method{rfPermute}{formula}(formula, data = NULL, \dots, subset, na.action = na.fail, nrep = 100, num.cores = options("mc.cores"))
+#' @usage \method{rfPermute}{formula}(formula, data = NULL, \dots, subset, na.action = na.fail, nrep = 100)
 
-rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100, num.cores = options("mc.cores")) {
+rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100) {
   # Takes same arguments as 'randomForest.formula', plus
   #   'nrep': number of permutation replicates
   #   'num.cores' : number of cores to use
@@ -25,7 +25,6 @@ rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.
   if (is.matrix(eval(m$data, parent.frame()))) m$data <- as.data.frame(data)
   m$... <- NULL
   m$nrep <- NULL
-  m$num.cores <- NULL
   m$na.action <- na.action
   m[[1]] <- as.name("model.frame")
   m <- eval(m, parent.frame())
@@ -52,7 +51,6 @@ rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.
   rf.call[[1]] <- as.name("randomForest")
   rf$call <- rf.call
   rf$call$nrep <- NULL
-  rf$call$num.cores <- NULL
   rf$terms <- Terms
   if (!is.null(attr(m, "na.action"))) rf$na.action <- attr(m, "na.action")
   

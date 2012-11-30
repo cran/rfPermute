@@ -20,7 +20,7 @@
   variable from the object produced by a call to
   \code{rfPermute}.
 }
-\note{
+\details{
   The function will generate an individual plot for each
   variable and importance metric on the default graphics
   device.
