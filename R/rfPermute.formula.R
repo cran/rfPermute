@@ -14,8 +14,6 @@ rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.
   #      importance metric (columns).
   #
   #  9/20/2012
-
-  stopifnot(require(randomForest, quietly = TRUE))
   if (!inherits(formula, "formula")) stop("method is only for formula objects")
   m <- match.call(expand.dots = FALSE)
   if (any(c("xtest", "ytest") %in% names(m))) stop("xtest/ytest not supported through the formula interface")

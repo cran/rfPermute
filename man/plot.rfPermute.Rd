@@ -18,7 +18,7 @@
   Plot the Random Forest null distributions importance
   metrics, observed values, and p-values for each predictor
   variable from the object produced by a call to
-  \code{rfPermute}.
+  \code{rfPermute}. ---extra line ---- another line
 }
 \details{
   The function will generate an individual plot for each
