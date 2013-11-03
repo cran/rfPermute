@@ -39,6 +39,8 @@ rp.importance <- function(x, sort.by = "MeanDecreaseAccuracy", decreasing = T) {
   
   order.list <- lapply(sort.by, function(i) vals[, i])
   order.list <- c(order.list, decreasing = decreasing)
-  vals[do.call(order, order.list), ]
+  imp <- vals[do.call(order, order.list), ]
+  class(imp) <- c("rp.importance", class(imp))
+  imp
 }
 

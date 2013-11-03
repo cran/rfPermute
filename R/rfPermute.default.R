@@ -13,8 +13,7 @@ rfPermute.default <- function(x, y, ..., nrep = 100) {
   #      importance metric (columns).
   #
   #  9/20/2012
-
-  stopifnot(require(randomForest, quietly = TRUE))
+  
   orig.call <- match.call()
   orig.call$nrep <- NULL
   orig.call$num.cores <- NULL
@@ -34,7 +33,6 @@ rfPermute.default <- function(x, y, ..., nrep = 100) {
   
   # permutes 'y' in rf.call 'nrep' times and runs randomForest  
   if(nrep > 0) {
-  	require(parallel, quietly = T)
     importance.perm <- mclapply(1:nrep, function(i) {
       rf.call$y <- sample(rf.call$y)
       eval(rf.call)$importance
