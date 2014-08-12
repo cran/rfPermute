@@ -1,19 +1,6 @@
 #' @rdname rfPermute
-#' @usage \method{rfPermute}{default}(x, y, \dots, nrep = 100)
 
-rfPermute.default <- function(x, y, ..., nrep = 100) {  
-  # Takes same arguments as 'randomForest.default', plus
-  #   'nrep': number of permutation replicates
-  #
-  # Returns 'randomForest' object with:
-  #   'null.dist' : 3 element named list with null distribution matrices
-  #      for two importance types as first two elements 
-  #      (columns are predictors, rows are permutation replicates),
-  #      and 'pval' a matrix of p-values for each predictor (rows) on each
-  #      importance metric (columns).
-  #
-  #  9/20/2012
-  
+rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {  
   orig.call <- match.call()
   orig.call$nrep <- NULL
   orig.call$num.cores <- NULL
@@ -36,24 +23,21 @@ rfPermute.default <- function(x, y, ..., nrep = 100) {
     importance.perm <- mclapply(1:nrep, function(i) {
       rf.call$y <- sample(rf.call$y)
       eval(rf.call)$importance
-    })
+    }, mc.cores = num.cores)
     
     # create null distribution for each variable  
     rf$null.dist <- sapply(imp.names, function(imp.type) {
-      t(sapply(1:length(importance.perm), function(i) importance.perm[[i]][, imp.type]))
+      null.dist <- sapply(1:length(importance.perm), function(i) importance.perm[[i]][, imp.type, drop = FALSE])
+      null.dist <- t(rbind(null.dist))
+      colnames(null.dist) <- rownames(rf$importance)
+      null.dist
     }, simplify = FALSE)
     
     # calculate p-value of observed importance metrics
-    rf$null.dist$pval <- t(sapply(rownames(rf$importance), function(pred) {
-      result <- sapply(names(rf$null.dist), function(imp.type) {
-        num.perm.gte <- sum(rf$null.dist[[imp.type]][, pred] >= rf$importance[pred, imp.type]) + 1
-        num.perm.gte / (nrow(rf$null.dist[[imp.type]]) + 1)
-      }, USE.NAMES = TRUE)
-    }, USE.NAMES = TRUE))
+    rf$null.dist$pval <- sapply(imp.names, function(imp) calc.imp.pval(rf, imp))
   } 
   
   rf$call <- orig.call
   class(rf) <- c("rfPermute", "randomForest")
   return(rf)  
 }
-

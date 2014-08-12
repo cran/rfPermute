@@ -1,32 +1,23 @@
-#' Plot the Random Forest null distributions importance metrics, 
+#' @export plot.rfPermute
+#' @usage \method{plot}{rfPermute}(x, imp.type, ...)
+#' 
+#' @title Plot Random Forest Importance Null Distributions.
+#' @description Plot the Random Forest null distributions importance metrics, 
 #' observed values, and p-values for
 #' each predictor variable from the object produced by a 
-#' call to \code{rfPermute}.
-#' ---extra line
-#' ---- another line
-#'
-#' @title Plot Random Forest importance null distributions.
-#' @export plot.rfPermute
-#' @S3method plot rfPermute
-#' @usage \method{plot}{rfPermute}(x, imp.type, ...)
-#' @param x An object produced by a call to \code{rfPermute}.
+#' call to \code{\link{rfPermute}}.
+#' 
+#' @param x An object produced by a call to \code{\link{rfPermute}}.
 #' @param imp.type Either a numeric or character vector giving the 
 #'   importance metric(s) to plot.
-#' @param ... Optional graphical arguments to be sent to \code{par}.
+#' @param ... Optional graphical arguments to be sent to \code{\link[graphics]{par}}.
 #' @details The function will generate an individual plot for
 #'   each variable and importance metric on the default graphics
 #'   device.
-#' @author Eric Archer <eric.archer@@noaa.gov>
+#'   
+#' @author Eric Archer \email{eric.archer@@noaa.gov}
 
-plot.rfPermute <- function(x, imp.type, ...) {
-  # Creates density plots of the null distributions for each predictor
-  #   and both importance types.  A vertical line marks the observed value. 
-  #
-  # 'x': an object of class 'rfPermute' with a 'null.dist' element
-  # 'imp.type': either a character or numeric vector of the importance metrics to plot
-  #
-  #  8/31/2011
-
+plot.rfPermute <- function(x, imp.type = 1, ...) {
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
   if(is.character(imp.type)) {
    not.found <- imp.type[!(imp.type %in% names(x$null.dist))]

@@ -1,17 +1,19 @@
-#' Plot proximity scores from a Random Forest object
-#'
-#' @title Plot proximity scores from a Random Forest object.
 #' @export proximity.plot
-#' @usage proximity.plot(rf, dim.x = 1, dim.y = 2, legend.loc = NULL, grp.cols = NULL, circle.size = 4)
+#' 
+#' @title Plot Random Forest Proximity Scores.
+#' @description Create a plot of Random Forest proximity scores using multi-dimensional scaling.
+#' 
 #' @param rf A \code{randomForest} object.
 #' @param dim.x,dim.y Numeric values giving x and y dimensions to plot from multidimensional scaling of proximity scores.
 #' @param legend.loc Character keyword specifying location of legend. See \link{legend}.
 #' @param grp.cols Character vector specifying colors for classes.
 #' @param circle.size Size of circles around correctly classified points as argument to 'cex'. Set to NULL for no circles.
+#' 
 #' @details Produces a scatter plot of proximity scores for \code{dim.x} and \code{dim.y}
 #' dimensions from a multidimensional scale (MDS) conversion of proximity scores from a 
 #' \code{randomForest} object. A convex hull is drawn around the a-priori classes.
-#' @author Eric Archer <eric.archer@@noaa.gov>
+#' 
+#' @author Eric Archer \email{eric.archer@@noaa.gov}
 
 proximity.plot <- function(rf, dim.x = 1, dim.y = 2, legend.loc = NULL, grp.cols = NULL, circle.size = 4) {
   prox.cmd <- cmdscale(1 - rf$proximity, k = max(c(dim.x, dim.y)))[, c(dim.x, dim.y)]
@@ -30,11 +32,8 @@ proximity.plot <- function(rf, dim.x = 1, dim.y = 2, legend.loc = NULL, grp.cols
   if(!is.null(legend.loc)) legend(legend.loc, legend = levels(rf$y), pch = 21, pt.bg = grp.cols)
   
   if(!is.null(circle.size) & is.numeric(circle.size)) {
-    correct <- rf$y == rf$predicted
-    pt.col <- bg.col[correct]
     pt.col <- grp.cols[as.numeric(rf$predicted)]
     points(prox.cmd[, 1], prox.cmd[, 2], col = pt.col, pch = 1, cex = circle.size)
-    #points(prox.cmd[correct, 1], prox.cmd[correct, 2], col = pt.col, pch = 1, cex = circle.size)
   }
   
   invisible(prox.cmd)

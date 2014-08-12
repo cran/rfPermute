@@ -1,19 +1,6 @@
 #' @rdname rfPermute
-#' @usage \method{rfPermute}{formula}(formula, data = NULL, \dots, subset, na.action = na.fail, nrep = 100)
 
-rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100) {
-  # Takes same arguments as 'randomForest.formula', plus
-  #   'nrep': number of permutation replicates
-  #   'num.cores' : number of cores to use
-  #
-  # Returns 'randomForest' object with:
-  #   'null.dist' : 3 element named list with null distribution matrices
-  #      for two importance types as first two elements 
-  #      (columns are predictors, rows are permutation replicates),
-  #      and 'pval' a matrix of p-values for each predictor (rows) on each
-  #      importance metric (columns).
-  #
-  #  9/20/2012
+rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100, num.cores = 1) {
   if (!inherits(formula, "formula")) stop("method is only for formula objects")
   m <- match.call(expand.dots = FALSE)
   if (any(c("xtest", "ytest") %in% names(m))) stop("xtest/ytest not supported through the formula interface")

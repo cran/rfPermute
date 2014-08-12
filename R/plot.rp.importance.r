@@ -1,18 +1,22 @@
-#' Plot the Random Forest importance distributions,
-#' with significant p-values as estimated in rfPermute.
-#'
-#' @title Plot Random Forest importance distributions.
 #' @export plot.rp.importance
-#' @S3method plot rp.importance
+#' @import ggplot2
+#' @importFrom gridExtra grid.arrange
 #' @usage \method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE, n = NULL, main = NULL, ...)
-#' @param x An object produced by a call to \code{rp.importance}.
+#' 
+#' @title Plot Random Forest Importance Distributions.
+#' @description Plot the Random Forest importance distributions,
+#' with significant p-values as estimated in rfPermute.
+#' 
+#' @param x An object produced by a call to \code{\link{rp.importance}}.
 #' @param alpha Critical alpha to identify "significant" predictors.
 #' @param sig.only Plot only the significant (<= \code{alpha}) predictors?
 #' @param n Plot \code{n} most important predictors.
 #' @param main Main title for plot.
 #' @param ... Optional arguments which will be ignored.
+#' 
 #' @details The function will generate a panel of plots, one for each importance type.
-#' @author Eric Archer <eric.archer@@noaa.gov>
+#' 
+#' @author Eric Archer \email{eric.archer@@noaa.gov}
 
 plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE, n = NULL, main = NULL, ...) {  
   imp.list <- lapply(seq(1, ncol(x), 2), function(i) {
