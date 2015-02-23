@@ -1,5 +1,5 @@
-#' @export plot.rfPermute
-#' @usage \method{plot}{rfPermute}(x, imp.type, ...)
+#' @export
+#' @usage \S3method{plot}{rfPermute}(x, imp.type, ...)
 #' 
 #' @title Plot Random Forest Importance Null Distributions.
 #' @description Plot the Random Forest null distributions importance metrics, 

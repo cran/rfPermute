@@ -1,4 +1,7 @@
 #' @rdname rfPermute
+#' @export
+#' @usage \S3method{rfPermute}{formula}(formula, data = NULL, ..., subset, na.action = na.fail, 
+#'   nrep = 100, num.cores = 1)
 
 rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100, num.cores = 1) {
   if (!inherits(formula, "formula")) stop("method is only for formula objects")

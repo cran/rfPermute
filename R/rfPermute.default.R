@@ -1,4 +1,6 @@
 #' @rdname rfPermute
+#' @export
+#' @usage \S3method{rfPermute}{default}(x, y, ..., nrep = 100, num.cores = 1)
 
 rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {  
   orig.call <- match.call()

@@ -1,7 +1,6 @@
-#' @export plot.rp.importance
-#' @import ggplot2
-#' @importFrom gridExtra grid.arrange
-#' @usage \method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE, n = NULL, main = NULL, ...)
+#' @export
+#' @import ggplot2 gridExtra grid
+#' @usage \S3method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE, n = NULL, main = NULL, ...)
 #' 
 #' @title Plot Random Forest Importance Distributions.
 #' @description Plot the Random Forest importance distributions,
@@ -29,12 +28,12 @@ plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE, n = NULL, main
     imp.df <- imp.df[order(imp.df$imp, decreasing = TRUE), ]
     if(sig.only) imp.df <- imp.df[as.logical(imp.df$is.sig), ]
     if(!is.null(n) & is.numeric(n)) imp.df <- imp.df[1:min(n, nrow(imp.df)), ]
-    with(imp.df, ggplot(imp.df, aes(imp, reorder(pred, imp))) + 
-      geom_point(aes(color = is.sig)) +
-      labs(title = colnames(x)[i], x = "Importance", y = "") +
+    with(imp.df, ggplot(imp.df, aes(reorder(pred, imp), imp)) + 
+      geom_bar(aes(fill = is.sig), stat = "identity") +
+      labs(title = colnames(x)[i], x = "Importance", y = "") + coord_flip() +
       theme(legend.position = "none") +
-      scale_colour_manual(values = c("FALSE" = "black", "TRUE" = "red"))
+      scale_fill_manual(values = c("FALSE" = "black", "TRUE" = "red"))
     )
   })
-  do.call(grid.arrange, c(imp.list, main = main))
+  suppressWarnings(do.call(gridExtra::grid.arrange, c(imp.list, main = main)))
 }

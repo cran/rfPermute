@@ -1,5 +1,5 @@
 #' @rdname rfPermute
-#' @export rfPermute rfPermute.default rfPermute.formula
+#' @export
 #' @importFrom randomForest randomForest
 #' @importFrom parallel mclapply
 #' 
