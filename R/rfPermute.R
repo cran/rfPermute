@@ -1,7 +1,5 @@
 #' @rdname rfPermute
-#' @export
 #' @importFrom randomForest randomForest
-#' @importFrom parallel mclapply
 #' 
 #' @title Estimate Permutation p-values for Random Forest Importance Metrics.
 #' @description Estimate significance of importance metrics for
@@ -13,8 +11,6 @@
 #' @param x,y,formula,data,subset,na.action,\dots See \code{\link{randomForest}} for definitions.
 #' @param nrep Number of permutation replicates to run to construct 
 #'   null distribution and calculate p-values (default = 100).
-#' @param num.cores Number of cores desired. Is used by the \code{\link[parallel]{mclapply}} function 
-#' for permutations. 
 #'
 #' @details All other parameters are as defined in \code{randomForest.formula}. A Random Forest model is
 #'   first created as normal to calculate the observed values of variable importance. \code{rfPermute}
@@ -35,8 +31,9 @@
 #' 
 #' @keywords tree classif regression
 #' 
-#' @seealso \code{\link{plot.rfPermute}} for plotting null distributions from the \code{rfPermute} object
-#' 
+#' @seealso 
+#' \code{\link{plot.rfPermute}} for plotting null distributions from the \code{rfPermute} objects. \cr
+#' \code{\link{rp.combine}} for combining multiple \code{rfPermute} objects.\cr
 #' \code{\link{randomForest}}
 #'
 #' @examples
@@ -46,5 +43,6 @@
 #'   print(ozone.rfP$importance)  # The original importance metrics.
 #'   print(ozone.rfP$null.dist$pval) # The p-values for each variable.
 #'   plot(ozone.rfP, imp.type = 1) # Plot the null distributions and observed values.
-
+#'
+#' @export
 rfPermute <- function(x, ...) UseMethod("rfPermute")

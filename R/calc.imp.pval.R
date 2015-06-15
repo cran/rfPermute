@@ -1,5 +1,3 @@
-#' @name calc.imp.pval
-#' 
 #' @title Calculate Importance p-value
 #' @description Calculate p-values for an importance metric from an rfPermute object. Used internally.
 #' 

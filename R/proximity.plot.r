@@ -1,5 +1,3 @@
-#' @export proximity.plot
-#' 
 #' @title Plot Random Forest Proximity Scores.
 #' @description Create a plot of Random Forest proximity scores using multi-dimensional scaling.
 #' 
@@ -14,7 +12,8 @@
 #' \code{randomForest} object. A convex hull is drawn around the a-priori classes.
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
-
+#' 
+#' @export
 proximity.plot <- function(rf, dim.x = 1, dim.y = 2, legend.loc = NULL, grp.cols = NULL, circle.size = 4) {
   prox.cmd <- cmdscale(1 - rf$proximity, k = max(c(dim.x, dim.y)))[, c(dim.x, dim.y)]
   if(is.null(grp.cols)) grp.cols <- rainbow(length(levels(rf$y)))

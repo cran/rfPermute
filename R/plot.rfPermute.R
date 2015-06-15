@@ -1,6 +1,3 @@
-#' @export
-#' @usage \S3method{plot}{rfPermute}(x, imp.type, ...)
-#' 
 #' @title Plot Random Forest Importance Null Distributions.
 #' @description Plot the Random Forest null distributions importance metrics, 
 #' observed values, and p-values for
@@ -16,7 +13,9 @@
 #'   device.
 #'   
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
-
+#' 
+#' @export plot.rfPermute
+#' @export
 plot.rfPermute <- function(x, imp.type = 1, ...) {
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
   if(is.character(imp.type)) {

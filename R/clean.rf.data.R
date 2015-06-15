@@ -1,5 +1,3 @@
-#' @export clean.rf.data
-#' 
 #' @title Clean Random Forest Input Data
 #' @description Removes cases with missing data and predictors that are constant.
 #' 
@@ -10,8 +8,9 @@
 #' 
 #' @return a data.frame containing cleaned data.
 #' 
-#' @author Eric Archer \email{eric.archer@@noaa.gov} 
-
+#' @author Eric Archer \email{eric.archer@@noaa.gov}
+#' 
+#' @export
 clean.rf.data <- function(x, y, data, max.levels = 30) {
   x <- setdiff(x, y)
   sub.df <- data[, c(y, x)]

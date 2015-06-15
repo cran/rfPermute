@@ -1,4 +1,3 @@
-#' @export rp.combine
 #' @importFrom randomForest combine
 #' 
 #' @title Combine rfPermute Objects
@@ -19,7 +18,8 @@
 #' rp3 <- rfPermute(Species ~ ., iris, ntree=50, norm.votes=FALSE, nrep = 100)
 #' rp.all <- rp.combine(rp1, rp2, rp3)
 #' plot(rp.all)
-
+#' 
+#' @export
 rp.combine <- function(...) {
   rp.list <- list(...)
   are.rp <- sapply(rp.list, function(x) inherits(x, c("rfPermute", "randomForest")))

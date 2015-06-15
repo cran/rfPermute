@@ -1,6 +1,4 @@
-#' @export
 #' @import ggplot2 gridExtra grid
-#' @usage \S3method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE, n = NULL, main = NULL, ...)
 #' 
 #' @title Plot Random Forest Importance Distributions.
 #' @description Plot the Random Forest importance distributions,
@@ -16,7 +14,9 @@
 #' @details The function will generate a panel of plots, one for each importance type.
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
-
+#' 
+#' @export plot.rp.importance
+#' @export
 plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE, n = NULL, main = NULL, ...) {  
   imp.list <- lapply(seq(1, ncol(x), 2), function(i) {
     imp.df <- as.data.frame(x[, c(i, i+1)])

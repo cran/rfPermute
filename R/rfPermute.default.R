@@ -1,8 +1,8 @@
 #' @rdname rfPermute
+#' 
+#' @export rfPermute.default
 #' @export
-#' @usage \S3method{rfPermute}{default}(x, y, ..., nrep = 100, num.cores = 1)
-
-rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {  
+rfPermute.default <- function(x, y, ..., nrep = 100) {  
   orig.call <- match.call()
   orig.call$nrep <- NULL
   orig.call$num.cores <- NULL
@@ -22,10 +22,10 @@ rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {
   
   # permutes 'y' in rf.call 'nrep' times and runs randomForest  
   if(nrep > 0) {
-    importance.perm <- mclapply(1:nrep, function(i) {
+    importance.perm <- lapply(1:nrep, function(i) {
       rf.call$y <- sample(rf.call$y)
       eval(rf.call)$importance
-    }, mc.cores = num.cores)
+    })
     
     # create null distribution for each variable  
     rf$null.dist <- sapply(imp.names, function(imp.type) {
