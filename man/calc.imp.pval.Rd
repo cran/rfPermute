@@ -4,12 +4,13 @@
 \alias{calc.imp.pval}
 \title{Calculate Importance p-value}
 \usage{
-calc.imp.pval(rp, imp.type)
+calc.imp.pval(rp, imp.names)
 }
 \arguments{
 \item{rp}{an \code{\link{rfPermute}} object with a \code{null.dist} element.}
 
-\item{imp.type}{column name of an importance metric from the \code{importance} and \code{null.dist} elements.}
+\item{imp.names}{vector of column names of an importance metric from the
+  \code{importance} and \code{null.dist} elements.}
 }
 \value{
 a vector of p-values for each predictor
@@ -20,4 +21,5 @@ Calculate p-values for an importance metric from an rfPermute object. Used inter
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }
+\keyword{internal}
 

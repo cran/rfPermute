@@ -4,8 +4,8 @@
 \alias{plot.rp.importance}
 \title{Plot Random Forest Importance Distributions.}
 \usage{
-\method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE, n = NULL,
-  main = NULL, ...)
+\method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE,
+  type = NULL, n = NULL, main = NULL, ...)
 }
 \arguments{
 \item{x}{An object produced by a call to \code{\link{rp.importance}}.}
@@ -13,6 +13,10 @@
 \item{alpha}{Critical alpha to identify "significant" predictors.}
 
 \item{sig.only}{Plot only the significant (<= \code{alpha}) predictors?}
+
+\item{type}{character vector listing which importance measures to plot.
+Can be class names or names of overall importance measures
+(e.g., "MeanDecreaseAccuracy") in the \code{\link{rp.importance}} object.}
 
 \item{n}{Plot \code{n} most important predictors.}
 

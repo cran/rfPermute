@@ -1,8 +1,10 @@
 #' @rdname rfPermute
 #' 
+#' @importFrom parallel makeForkCluster parLapply stopCluster
 #' @export rfPermute.default
 #' @export
-rfPermute.default <- function(x, y, ..., nrep = 100) {  
+#' 
+rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {  
   orig.call <- match.call()
   orig.call$nrep <- NULL
   orig.call$num.cores <- NULL
@@ -22,10 +24,25 @@ rfPermute.default <- function(x, y, ..., nrep = 100) {
   
   # permutes 'y' in rf.call 'nrep' times and runs randomForest  
   if(nrep > 0) {
-    importance.perm <- lapply(1:nrep, function(i) {
-      rf.call$y <- sample(rf.call$y)
+    # define permutation function
+    permFunc <- function(y, perm.rf.call) {
+      rf.call$y <- y
       eval(rf.call)$importance
-    })
+    }
+    
+    # create list of permuted y values
+    ran.y <- lapply(1:nrep, function(i) sample(rf.call$y))
+    
+    # get importance scores for permutations
+    importance.perm <- NULL
+    if(num.cores > 1) {
+      cl <- makeForkCluster(num.cores)
+      tryCatch({
+        importance.perm <- parLapply(cl, ran.y, permFunc, perm.rf.call = rf.call)
+      }, finally = stopCluster(cl))
+    } else {
+      importance.perm <- lapply(ran.y, permFunc)
+    }
     
     # create null distribution for each variable  
     rf$null.dist <- sapply(imp.names, function(imp.type) {
@@ -36,7 +53,7 @@ rfPermute.default <- function(x, y, ..., nrep = 100) {
     }, simplify = FALSE)
     
     # calculate p-value of observed importance metrics
-    rf$null.dist$pval <- sapply(imp.names, function(imp) calc.imp.pval(rf, imp))
+    rf$null.dist$pval <- calc.imp.pval(rf, imp.names) 
   } 
   
   rf$call <- orig.call

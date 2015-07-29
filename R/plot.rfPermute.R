@@ -14,8 +14,11 @@
 #'   
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
+#' @importFrom graphics abline par plot
+#' @importFrom stats density
 #' @export plot.rfPermute
 #' @export
+#' 
 plot.rfPermute <- function(x, imp.type = 1, ...) {
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
   if(is.character(imp.type)) {

@@ -10,7 +10,9 @@
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
+#' @importFrom stats complete.cases
 #' @export
+#' 
 clean.rf.data <- function(x, y, data, max.levels = 30) {
   x <- setdiff(x, y)
   sub.df <- data[, c(y, x)]

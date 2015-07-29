@@ -8,7 +8,7 @@
 \usage{
 rfPermute(x, ...)
 
-\method{rfPermute}{default}(x, y, ..., nrep = 100)
+\method{rfPermute}{default}(x, y, ..., nrep = 100, num.cores = 1)
 
 \method{rfPermute}{formula}(formula, data = NULL, ..., subset,
   na.action = na.fail, nrep = 100)
@@ -17,7 +17,9 @@ rfPermute(x, ...)
 \item{x,y,formula,data,subset,na.action,\dots}{See \code{\link{randomForest}} for definitions.}
 
 \item{nrep}{Number of permutation replicates to run to construct
-  null distribution and calculate p-values (default = 100).}
+null distribution and calculate p-values (default = 100).}
+
+\item{num.cores}{Number of CPUs to distribute permutation results over.}
 }
 \value{
 An \code{rfPermute} object which contains all of the components of a
@@ -47,9 +49,16 @@ All other parameters are as defined in \code{randomForest.formula}. A Random For
 # A regression model using the ozone example
   data(airquality)
   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 500, na.action = na.omit, nrep = 50)
-  print(ozone.rfP$importance)  # The original importance metrics.
-  print(ozone.rfP$null.dist$pval) # The p-values for each variable.
-  plot(ozone.rfP, imp.type = 1) # Plot the null distributions and observed values.
+
+  # The importance metrics and their p-values
+  ozone.imp <- rp.importance(ozone.rfP)
+  print(ozone.imp)
+
+  # Plot the null distributions and observed values.
+  plot(ozone.rfP, imp.type = 1)
+
+  # Plot the importance distributions and highlight significant predictors
+  plot(ozone.imp)
 }
 \author{
 Eric Archer \email{eric.archer@noaa.gov}

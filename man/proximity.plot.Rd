@@ -26,6 +26,12 @@ Produces a scatter plot of proximity scores for \code{dim.x} and \code{dim.y}
 dimensions from a multidimensional scale (MDS) conversion of proximity scores from a
 \code{randomForest} object. A convex hull is drawn around the a-priori classes.
 }
+\examples{
+data(iris)
+iris.rf <- randomForest(Species ~ ., data = iris, importance = TRUE, proximity = TRUE)
+iris.rf
+proximity.plot(iris.rf, legend.loc = "topleft")
+}
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }

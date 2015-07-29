@@ -20,6 +20,7 @@
 #' plot(rp.all)
 #' 
 #' @export
+#' 
 rp.combine <- function(...) {
   rp.list <- list(...)
   are.rp <- sapply(rp.list, function(x) inherits(x, c("rfPermute", "randomForest")))
@@ -30,7 +31,7 @@ rp.combine <- function(...) {
   rf$null.dist <- sapply(imp.types, function(imp) {
     do.call(rbind, lapply(rp.list, function(rp) rp$null.dist[[imp]]))
   }, simplify = FALSE)
-  rf$null.dist$pval <- sapply(imp.types, function(imp) calc.imp.pval(rf, imp))
+  rf$null.dist$pval <- calc.imp.pval(rf, imp.types)
   
   class(rf) <- c("rfPermute", "randomForest")
   return(rf)  

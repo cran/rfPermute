@@ -1,6 +1,4 @@
-#' @rdname rfPermute
-#' @importFrom randomForest randomForest
-#' 
+#' @name rfPermute
 #' @title Estimate Permutation p-values for Random Forest Importance Metrics.
 #' @description Estimate significance of importance metrics for
 #' a Random Forest model by permuting the response
@@ -11,6 +9,7 @@
 #' @param x,y,formula,data,subset,na.action,\dots See \code{\link{randomForest}} for definitions.
 #' @param nrep Number of permutation replicates to run to construct 
 #'   null distribution and calculate p-values (default = 100).
+#' @param num.cores Number of CPUs to distribute permutation results over.
 #'
 #' @details All other parameters are as defined in \code{randomForest.formula}. A Random Forest model is
 #'   first created as normal to calculate the observed values of variable importance. \code{rfPermute}
@@ -40,9 +39,29 @@
 #'   # A regression model using the ozone example
 #'   data(airquality)
 #'   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 500, na.action = na.omit, nrep = 50)
-#'   print(ozone.rfP$importance)  # The original importance metrics.
-#'   print(ozone.rfP$null.dist$pval) # The p-values for each variable.
-#'   plot(ozone.rfP, imp.type = 1) # Plot the null distributions and observed values.
+#'   
+#'   # The importance metrics and their p-values
+#'   ozone.imp <- rp.importance(ozone.rfP)
+#'   print(ozone.imp)
+#'   
+#'   # Plot the null distributions and observed values.
+#'   plot(ozone.rfP, imp.type = 1) 
+#'   
+#'   # Plot the importance distributions and highlight significant predictors
+#'   plot(ozone.imp)
 #'
+#' @importFrom randomForest randomForest
 #' @export
+#' 
 rfPermute <- function(x, ...) UseMethod("rfPermute")
+
+# #' @rdname rfPermute
+# #' @export
+# #' 
+# setMethod("print", "rfPermute",
+#   function(x, ...) { 
+#     randomForest:::print.randomForest(x)
+#     cat("\nImportance scores and p-values:\n")
+#     print(unclass(rp.importance(x)))
+#   }
+# )

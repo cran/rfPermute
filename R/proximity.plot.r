@@ -13,8 +13,19 @@
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
+#' @examples
+#' data(iris)
+#' iris.rf <- randomForest(Species ~ ., data = iris, importance = TRUE, proximity = TRUE)
+#' iris.rf
+#' proximity.plot(iris.rf, legend.loc = "topleft")
+#' 
+#' @importFrom stats cmdscale
+#' @importFrom grDevices chull rainbow
+#' @importFrom graphics plot lines legend points
 #' @export
+#' 
 proximity.plot <- function(rf, dim.x = 1, dim.y = 2, legend.loc = NULL, grp.cols = NULL, circle.size = 4) {
+  if(is.null(rf$proximity)) stop("'rf' has no 'proximity' element. rerun with 'proximity = TRUE'")
   prox.cmd <- cmdscale(1 - rf$proximity, k = max(c(dim.x, dim.y)))[, c(dim.x, dim.y)]
   if(is.null(grp.cols)) grp.cols <- rainbow(length(levels(rf$y)))
   bg.col <- grp.cols[as.numeric(rf$y)]

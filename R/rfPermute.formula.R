@@ -1,5 +1,6 @@
 #' @rdname rfPermute
 #' 
+#' @importFrom stats na.fail model.response model.frame terms reformulate
 #' @export rfPermute.formula
 #' @export
 rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100) {
