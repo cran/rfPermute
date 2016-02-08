@@ -14,19 +14,24 @@
 #' @export
 #' 
 clean.rf.data <- function(x, y, data, max.levels = 30) {
+  data <- as.data.frame(data)
+  if (is.null(colnames(data))) colnames(data) <- 1:ncol(data)
   x <- setdiff(x, y)
+  if (is.numeric(x)) x <- colnames(data)[x]
+  if (is.numeric(y)) y <- colnames(data)[y]
   sub.df <- data[, c(y, x)]
   sub.df <- sub.df[complete.cases(sub.df), , drop = TRUE]
   
-  delete.pred <- character(0)
-  for (pred in x) {
+  delete.pred <- sapply(x, function(pred){
     pred.vec <- sub.df[[pred]]
-    if (length(unique(pred.vec)) == 0) delete.pred <- c(delete.pred, pred)
-    if (is.factor(pred.vec) & (nlevels(pred.vec) > max.levels)) delete.pred <- c(delete.pred, pred)
-  }
-  delete.pred <- unique(delete.pred)
+    if (length(unique(pred.vec)) <= 1) return(pred)
+    if (is.factor(pred.vec) & (nlevels(pred.vec) > max.levels)) return(pred)
+    NULL
+  })
+  delete.pred <- unlist(delete.pred)
+  delete.pred <- delete.pred[!is.null(delete.pred)]
+  
   if (length(delete.pred) > 0) x <- setdiff(x, delete.pred)
-
   if (is.factor(sub.df[[y]]) & nlevels(sub.df[[y]][, drop = TRUE]) < 2) return(NULL)
   sub.df[, c(y, x)]
 }

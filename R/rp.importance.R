@@ -15,6 +15,7 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
 #' @export
+#' 
 rp.importance <- function(x, sort.by = NULL, decreasing = TRUE) {  
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
   if((!is.character(sort.by) & !is.vector(sort.by)) & !is.null(sort.by)) stop("'sort.by' is not a character vector")

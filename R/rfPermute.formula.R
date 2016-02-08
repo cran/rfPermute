@@ -3,6 +3,7 @@
 #' @importFrom stats na.fail model.response model.frame terms reformulate
 #' @export rfPermute.formula
 #' @export
+#' 
 rfPermute.formula <- function(formula, data = NULL, ..., subset, na.action = na.fail, nrep = 100) {
   if (!inherits(formula, "formula")) stop("method is only for formula objects")
   m <- match.call(expand.dots = FALSE)

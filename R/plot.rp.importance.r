@@ -1,5 +1,3 @@
-#' @import ggplot2 gridExtra grid
-#' 
 #' @title Plot Random Forest Importance Distributions.
 #' @description Plot the Random Forest importance distributions,
 #' with significant p-values as estimated in rfPermute.
@@ -18,8 +16,10 @@
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
-#' @export plot.rp.importance
+#' @import ggplot2 
+#' @importFrom gridExtra grid.arrange
 #' @export
+#' 
 plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE, 
                                type = NULL, n = NULL, main = NULL, ...) { 
   cols <- if(is.null(type)) {
@@ -51,5 +51,5 @@ plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE,
            scale_fill_manual(values = c("FALSE" = "black", "TRUE" = "red"))
     )
   })
-  suppressWarnings(do.call(gridExtra::grid.arrange, c(imp.list, main = main)))
+  suppressWarnings(do.call(gridExtra::grid.arrange, c(imp.list, top = main)))
 }

@@ -1,5 +1,3 @@
-#' @importFrom randomForest combine
-#' 
 #' @title Combine rfPermute Objects
 #' @description Combines two or more ensembles of \code{rfPermute} objects into one, combining
 #' \code{randomForest} results, null distributions, and re-calculating p-values.
@@ -19,6 +17,7 @@
 #' rp.all <- rp.combine(rp1, rp2, rp3)
 #' plot(rp.all)
 #' 
+#' @importFrom randomForest combine
 #' @export
 #' 
 rp.combine <- function(...) {
