@@ -10,21 +10,27 @@ proximity.plot(rf, dim.x = 1, dim.y = 2, legend.loc = NULL,
 \arguments{
 \item{rf}{A \code{randomForest} object.}
 
-\item{dim.x, dim.y}{Numeric values giving x and y dimensions to plot from multidimensional scaling of proximity scores.}
+\item{dim.x, dim.y}{Numeric values giving x and y dimensions to plot from 
+multidimensional scaling of proximity scores.}
 
-\item{legend.loc}{Character keyword specifying location of legend. See \link{legend}.}
+\item{legend.loc}{Character keyword specifying location of legend. 
+See \link{legend}.}
 
 \item{grp.cols}{Character vector specifying colors for classes.}
 
-\item{circle.size}{Size of circles around correctly classified points as argument to 'cex'. Set to NULL for no circles.}
+\item{circle.size}{Size of circles around correctly classified 
+points as argument to 'cex'. Set to NULL for no circles.}
 }
 \description{
-Create a plot of Random Forest proximity scores using multi-dimensional scaling.
+Create a plot of Random Forest proximity scores using 
+  multi-dimensional scaling.
 }
 \details{
-Produces a scatter plot of proximity scores for \code{dim.x} and \code{dim.y}
-dimensions from a multidimensional scale (MDS) conversion of proximity scores from a 
-\code{randomForest} object. A convex hull is drawn around the a-priori classes.
+Produces a scatter plot of proximity scores for \code{dim.x} and 
+  \code{dim.y} dimensions from a multidimensional scale (MDS) conversion of 
+  proximity scores from a \code{randomForest} object. For classification 
+  models, a convex hull is drawn around the a-priori classes with points 
+  colored according to original (inner) and predicted (outer) class.
 }
 \examples{
 data(iris)

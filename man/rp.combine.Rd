@@ -7,18 +7,20 @@
 rp.combine(...)
 }
 \arguments{
-\item{\dots}{two or more objects of class \code{rfPermute}, to be combined into one.}
+\item{\dots}{two or more objects of class \code{rfPermute}, to be combined 
+into one.}
 }
 \description{
-Combines two or more ensembles of \code{rfPermute} objects into one, combining
-\code{randomForest} results, null distributions, and re-calculating p-values.
+Combines two or more ensembles of \code{rfPermute} objects into 
+  one, combining \code{randomForest} results, null distributions, 
+  and re-calculating p-values.
 }
 \examples{
 
 data(iris)
-rp1 <- rfPermute(Species ~ ., iris, ntree=50, norm.votes=FALSE, nrep = 100)
-rp2 <- rfPermute(Species ~ ., iris, ntree=50, norm.votes=FALSE, nrep = 100)
-rp3 <- rfPermute(Species ~ ., iris, ntree=50, norm.votes=FALSE, nrep = 100)
+rp1 <- rfPermute(Species ~ ., iris, ntree = 50, norm.votes = FALSE, nrep = 100)
+rp2 <- rfPermute(Species ~ ., iris, ntree = 50, norm.votes = FALSE, nrep = 100)
+rp3 <- rfPermute(Species ~ ., iris, ntree = 50, norm.votes = FALSE, nrep = 100)
 rp.all <- rp.combine(rp1, rp2, rp3)
 plot(rp.all)
 

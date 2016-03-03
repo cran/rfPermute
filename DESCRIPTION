@@ -7,15 +7,16 @@ Description: Estimate significance of importance metrics
     variable. Produces null distribution of importance
     metrics for each predictor variable and p-value of
     observed.
-Version: 1.9.3
-Date: 2016-02-07
+Version: 2.0
+Date: 2016-03-03
 Author: Eric Archer
 Maintainer: Eric Archer <eric.archer@noaa.gov>
-Depends: R (>= 3.2.0), ggplot2, randomForest
-Imports: graphics, grDevices, gridExtra, stats
+Depends: R (>= 3.2.0), randomForest
+Imports: abind, ggplot2, graphics, grDevices, gridExtra, stats,
+        swfscMisc
 License: GPL (>= 2)
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-02-08 07:28:56 UTC; eric.archer
+Packaged: 2016-03-03 20:00:37 UTC; eric.archer
 Repository: CRAN
-Date/Publication: 2016-02-08 13:37:56
+Date/Publication: 2016-03-03 23:49:02

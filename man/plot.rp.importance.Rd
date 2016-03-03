@@ -29,7 +29,8 @@ Plot the Random Forest importance distributions,
 with significant p-values as estimated in rfPermute.
 }
 \details{
-The function will generate a panel of plots, one for each importance type.
+The function will generate a panel of plots, one for each 
+  importance type.
 }
 \author{
 Eric Archer \email{eric.archer@noaa.gov}

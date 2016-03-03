@@ -1,10 +1,11 @@
 #' @title Clean Random Forest Input Data
-#' @description Removes cases with missing data and predictors that are constant.
+#' @description Removes cases for a Random Forest classification model 
+#'   with missing data and predictors that are constant.
 #' 
 #' @param x columns used as predictor variables as character or numeric vector.
 #' @param y column used as response variable as character or numeric.
-#' @param data data.frame containing 'x' and 'y' columns.
-#' @param max.levels maximum number of levels in response variable 'y'.
+#' @param data data.frame containing \code{x} and \code{y} columns.
+#' @param max.levels maximum number of levels in response variable \code{y}.
 #' 
 #' @return a data.frame containing cleaned data.
 #' 

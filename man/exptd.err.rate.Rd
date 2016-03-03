@@ -7,14 +7,14 @@
 exptd.err.rate(rf)
 }
 \arguments{
-\item{rf}{a \code{link{randomForest}} or \code{\link{rfPermute}} object.}
+\item{rf}{an object inheriting from \code{link{randomForest}}.}
 }
 \value{
-a vector of expected error rates.
+a vector of expected error rates for each class.
 }
 \description{
-Calculate expected OOB error rates based on random assignment 
-  and class sizes (prior).
+Calculate expected OOB error rates for randomForest 
+  classification model based on random assignment and class sizes (prior).
 }
 \author{
 Eric Archer \email{eric.archer@noaa.gov}

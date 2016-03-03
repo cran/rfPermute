@@ -11,15 +11,16 @@ clean.rf.data(x, y, data, max.levels = 30)
 
 \item{y}{column used as response variable as character or numeric.}
 
-\item{data}{data.frame containing 'x' and 'y' columns.}
+\item{data}{data.frame containing \code{x} and \code{y} columns.}
 
-\item{max.levels}{maximum number of levels in response variable 'y'.}
+\item{max.levels}{maximum number of levels in response variable \code{y}.}
 }
 \value{
 a data.frame containing cleaned data.
 }
 \description{
-Removes cases with missing data and predictors that are constant.
+Removes cases for a Random Forest classification model 
+  with missing data and predictors that are constant.
 }
 \author{
 Eric Archer \email{eric.archer@noaa.gov}

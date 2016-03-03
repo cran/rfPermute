@@ -4,13 +4,15 @@
 \alias{plot.rfPermute}
 \title{Plot Random Forest Importance Null Distributions.}
 \usage{
-\method{plot}{rfPermute}(x, imp.type = 1, ...)
+\method{plot}{rfPermute}(x, imp.type = 1, scale = TRUE, ...)
 }
 \arguments{
 \item{x}{An object produced by a call to \code{\link{rfPermute}}.}
 
 \item{imp.type}{Either a numeric or character vector giving the 
 importance metric(s) to plot.}
+
+\item{scale}{Plot importance measures scaled (divided by) standard errors?}
 
 \item{...}{Optional graphical arguments to be sent to \code{\link[graphics]{par}}.}
 }
