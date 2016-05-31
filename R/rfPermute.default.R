@@ -1,6 +1,6 @@
 #' @rdname rfPermute
 #' 
-#' @importFrom parallel makeForkCluster parLapply stopCluster
+#' @importFrom parallel makeForkCluster parLapply stopCluster detectCores makePSOCKcluster
 #' @export rfPermute.default
 #' @export
 #' 
@@ -42,9 +42,15 @@ rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {
     
     # get importance scores for permutations
     #  a list of 3-dimensional arrays of importance scores
-    null.dist<- NULL
+    null.dist <- NULL
+    
+    if(is.null(num.cores)) num.cores <- detectCores() - 1
+    if(is.na(num.cores)) num.cores <- 1
+    num.cores <- max(1, num.cores)
+    num.cores <- min(num.cores, detectCores() - 1)
     if(num.cores > 1) {
-      cl <- makeForkCluster(num.cores)
+      is.windows <- .Platform$OS.type == "windows"
+      cl <- if(is.windows) makePSOCKcluster(num.cores) else makeForkCluster(num.cores)
       tryCatch({
         null.dist <- parLapply(cl, ran.y, permFunc, perm.rf.call = rf.call)
       }, finally = {

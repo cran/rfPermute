@@ -4,8 +4,9 @@
 \alias{proximity.plot}
 \title{Plot Random Forest Proximity Scores.}
 \usage{
-proximity.plot(rf, dim.x = 1, dim.y = 2, legend.loc = NULL,
-  grp.cols = NULL, circle.size = 4)
+proximity.plot(rf, dim.x = 1, dim.y = 2, legend.loc = c("top", "bottom",
+  "left", "right"), point.size = 2, circle.size = 8, circle.border = 1,
+  plot = TRUE)
 }
 \arguments{
 \item{rf}{A \code{randomForest} object.}
@@ -14,12 +15,20 @@ proximity.plot(rf, dim.x = 1, dim.y = 2, legend.loc = NULL,
 multidimensional scaling of proximity scores.}
 
 \item{legend.loc}{Character keyword specifying location of legend. 
-See \link{legend}.}
+Can be \code{"bottom", "top", "left", "right"}.}
 
-\item{grp.cols}{Character vector specifying colors for classes.}
+\item{point.size}{Size of central points.}
 
 \item{circle.size}{Size of circles around correctly classified 
 points as argument to 'cex'. Set to NULL for no circles.}
+
+\item{circle.border}{Width of circle border.}
+
+\item{plot}{logical determining whether or not to show plot.}
+}
+\value{
+a list with \code{prox.cmd}: the MDS scores of the selected dimensions, 
+  and \code{g} the \code{\link{ggplot}} object.
 }
 \description{
 Create a plot of Random Forest proximity scores using 
@@ -33,10 +42,10 @@ Produces a scatter plot of proximity scores for \code{dim.x} and
   colored according to original (inner) and predicted (outer) class.
 }
 \examples{
-data(iris)
-iris.rf <- randomForest(Species ~ ., data = iris, importance = TRUE, proximity = TRUE)
-iris.rf
-proximity.plot(iris.rf, legend.loc = "topleft")
+data(mtcars)
+rf <- randomForest(factor(am) ~ ., mtcars, proximity = TRUE)
+rf
+proximity.plot(rf)
 
 }
 \author{

@@ -30,9 +30,10 @@ plot.rfPermute <- function(x, imp.type = 1, scale = TRUE, ...) {
    if(length(not.found) > 0) {
      imp <- paste(not.found, collapse = ", ")
      stop(paste("imp.type: ", imp, " is not in 'x'", sep = ""))
-    }
+   }
   } else if(is.numeric(imp.type)) {
     if(!all(imp.type <= ncol(imp))) stop("some 'imp.type' out of range")
+    imp.type <- colnames(imp)[imp.type]
   } else stop("'imp.type' is not a character or numeric vector")
   
   op <- par(..., no.readonly = TRUE)

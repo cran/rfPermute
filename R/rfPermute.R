@@ -31,12 +31,14 @@
 #' \code{\link{plot.rfPermute}} for plotting null distributions from the \code{rfPermute} objects. \cr
 #' \code{\link{rp.importance}} for extracting importance measures. \cr
 #' \code{\link{rp.combine}} for combining multiple \code{rfPermute} objects.\cr
+#' \code{\link{proximity.plot}} for plotting case proximities.\cr
+#' \code{\link{impHeatmap}} for plotting a heatmap of importance scores.\cr
 #' \code{\link{randomForest}}
 #'
 #' @examples
 #'   # A regression model using the ozone example
 #'   data(airquality)
-#'   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 500, na.action = na.omit, nrep = 50)
+#'   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
 #'   
 #'   # Plot the null distributions and observed values.
 #'   layout(matrix(1:6, nrow = 2))
@@ -48,7 +50,6 @@
 #'   
 #'   # ... and the scaled measures
 #'   plot(rp.importance(ozone.rfP, scale = TRUE))
-#'
 #'
 #' @importFrom randomForest randomForest
 #' @export
