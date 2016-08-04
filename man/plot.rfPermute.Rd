@@ -27,6 +27,17 @@ The function will generate an individual plot for
   each variable and importance metric on the default graphics
   device.
 }
+\examples{
+  # A regression model using the ozone example
+  data(airquality)
+  ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+  
+  # Plot the null distributions and observed values.
+  layout(matrix(1:6, nrow = 2))
+  plot(ozone.rfP) 
+  layout(matrix(1))
+
+}
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }

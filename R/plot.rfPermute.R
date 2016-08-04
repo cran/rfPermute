@@ -9,11 +9,22 @@
 #'   importance metric(s) to plot.
 #' @param scale Plot importance measures scaled (divided by) standard errors?
 #' @param ... Optional graphical arguments to be sent to \code{\link[graphics]{par}}.
+#' 
 #' @details The function will generate an individual plot for
 #'   each variable and importance metric on the default graphics
 #'   device.
 #'   
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
+#' 
+#' @examples
+#'   # A regression model using the ozone example
+#'   data(airquality)
+#'   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+#'   
+#'   # Plot the null distributions and observed values.
+#'   layout(matrix(1:6, nrow = 2))
+#'   plot(ozone.rfP) 
+#'   layout(matrix(1))
 #' 
 #' @importFrom graphics abline par plot
 #' @importFrom stats density
@@ -36,15 +47,16 @@ plot.rfPermute <- function(x, imp.type = 1, scale = TRUE, ...) {
     imp.type <- colnames(imp)[imp.type]
   } else stop("'imp.type' is not a character or numeric vector")
   
-  op <- par(..., no.readonly = TRUE)
   sc <- if(scale) "scaled" else "unscaled"
-  for(pred in rownames(imp)) {
+  
+  op <- par(..., no.readonly = TRUE)
+  for(p in rownames(imp)) {
     for(i in imp.type) {
-      n <- x$null.dist[[sc]][pred, i, ]
-      o <- imp[pred, i]
+      n <- x$null.dist[[sc]][p, i, ]
+      o <- imp[p, i]
       xlab <- if(is.character(i)) i else colnames(imp)[i]
-      pval <- x$pval[pred, i, sc]
-      main <- c(paste("Variable:", pred), 
+      pval <- x$pval[p, i, sc]
+      main <- c(paste("Variable:", p), 
                 paste("P(null >= obs) =", sprintf("%0.3f", pval)))
       plot(density(n), xlim = range(c(n, o)), xlab = xlab, main = main)
       abline(v = o, lwd = 2)

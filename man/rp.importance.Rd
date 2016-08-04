@@ -27,10 +27,22 @@ p-values can be given to the \code{sort.by} argument by adding
   '.pval' to the column name of the desired column from the \code{importance} 
   element of the \code{rfPermute} object.
 }
+\examples{
+  # A regression model using the ozone example
+  data(airquality)
+  ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+  
+  imp.unscaled <- rp.importance(ozone.rfP, scale = TRUE)
+  imp.unscaled
+  
+  imp.scaled <- rp.importance(ozone.rfP, scale = TRUE)
+  imp.scaled
+
+}
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }
 \seealso{
-\code{\link{rfPermute}}
+\code{\link{rfPermute}}, \code{\link{plot.rp.importance}}
 }
 

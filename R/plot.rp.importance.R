@@ -17,7 +17,20 @@
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
-#' @importFrom ggplot2 ggplot aes geom_bar labs coord_flip theme scale_fill_manual
+#' @examples
+#'   # A regression model using the ozone example
+#'   data(airquality)
+#'   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+#'   
+#'   # Plot the unscaled importance distributions and highlight significant predictors
+#'   plot(rp.importance(ozone.rfP, scale = FALSE))
+#'   
+#'   # ... and the scaled measures
+#'   plot(rp.importance(ozone.rfP, scale = TRUE))
+#' 
+#' @seealso \code{\link{rfPermute}}, \code{\link{rp.importance}}
+#' 
+#' @importFrom ggplot2 ggplot aes geom_bar coord_flip theme scale_fill_manual ggtitle element_blank
 #' @importFrom gridExtra grid.arrange
 #' @export
 #' 
@@ -48,10 +61,15 @@ plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE,
     with(imp.df, 
          ggplot(imp.df, aes(reorder(pred, imp), imp)) + 
            geom_bar(aes(fill = is.sig), stat = "identity") +
-           labs(title = colnames(x)[i], x = "", y = "Importance") + 
-           coord_flip() + theme(legend.position = "none") +
-           scale_fill_manual(values = c("FALSE" = "black", "TRUE" = "red"))
+           coord_flip() + ggtitle(colnames(x)[i]) + 
+           scale_fill_manual(values = c("FALSE" = "black", "TRUE" = "red")) +
+           theme(
+             legend.position = "none",
+             axis.title = element_blank()
+           )
     )
   })
-  suppressWarnings(do.call(gridExtra::grid.arrange, c(imp.list, top = main)))
+  imp.list$top <- main
+  imp.list$bottom <- "Importance"
+  suppressWarnings(do.call(gridExtra::grid.arrange, imp.list))
 }

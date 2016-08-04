@@ -11,6 +11,8 @@
 #' @param circle.size Size of circles around correctly classified 
 #'   points as argument to 'cex'. Set to NULL for no circles.
 #' @param circle.border Width of circle border.
+#' @param hull.alpha value giving alpha transparency level for convex hull shading. 
+#'   Setting to \code{NULL} produces no shading. Ignored for regression models.
 #' @param plot logical determining whether or not to show plot.
 #' 
 #' @details Produces a scatter plot of proximity scores for \code{dim.x} and 
@@ -38,7 +40,7 @@
 proximity.plot <- function(rf, dim.x = 1, dim.y = 2, 
                            legend.loc = c("top", "bottom", "left", "right"),
                            point.size = 2, circle.size = 8, circle.border = 1, 
-                           plot = TRUE) {
+                           hull.alpha = 0.3, plot = TRUE) {
   
   if(is.null(rf$proximity)) {
     stop("'rf' has no 'proximity' element. rerun with 'proximity = TRUE'")
@@ -49,8 +51,37 @@ proximity.plot <- function(rf, dim.x = 1, dim.y = 2,
   df <- data.frame(prox.cmd, class = rf$y, predicted = rf$predicted)
   colnames(df)[1:2] <- c("x", "y")
   
-  g <- ggplot(df, aes_string("x", "y")) + 
-    geom_point(aes_string(color = "class"), size = point.size) +
+  g <- ggplot(df, aes_string("x", "y")) 
+  
+  # Add convex hulls
+  if(rf$type != "regression") {
+    loc.hull <- tapply(1:nrow(prox.cmd), rf$y, function(i) {
+      ch <- chull(prox.cmd[i, 1], prox.cmd[i, 2])
+      c(i[ch], i[ch[1]])
+    })
+    for(ch in 1:length(loc.hull)) {
+      ch.df <- df[loc.hull[[ch]], ]
+      g <- g + if(!is.null(hull.alpha)) {
+        geom_polygon(
+          aes_string("x", "y", color = "class", fill = "class"), 
+          alpha = hull.alpha,
+          data = ch.df, 
+          inherit.aes = FALSE, 
+          show.legend = FALSE
+        ) 
+      } else {
+        geom_polygon(
+          aes_string("x", "y", color = "class"), 
+          fill = "transparent",
+          data = ch.df, 
+          inherit.aes = FALSE, 
+          show.legend = FALSE
+        ) 
+      }
+    }
+  }
+  
+  g <- g + geom_point(aes_string(color = "class"), size = point.size) +
     labs(x = paste("Dimension", dim.x), y = paste("Dimension", dim.y)) +
     theme(
       legend.position = match.arg(legend.loc),
@@ -70,24 +101,6 @@ proximity.plot <- function(rf, dim.x = 1, dim.y = 2,
       stroke = circle.border,
       show.legend = FALSE
     )
-  }
-  
-  # Add convex hulls
-  if(rf$type != "regression") {
-    loc.hull <- tapply(1:nrow(prox.cmd), rf$y, function(i) {
-      ch <- chull(prox.cmd[i, 1], prox.cmd[i, 2])
-      c(i[ch], i[ch[1]])
-    })
-    for(ch in 1:length(loc.hull)) {
-      ch.df <- df[loc.hull[[ch]], ]
-      g <- g + geom_polygon(
-        aes_string("x", "y", color = "class"), 
-        fill = "transparent",
-        data = ch.df, 
-        inherit.aes = FALSE, 
-        show.legend = FALSE
-      ) 
-    }
   }
   
   if(plot) print(g)
