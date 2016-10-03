@@ -14,7 +14,7 @@
 #' @importFrom stats complete.cases
 #' @export
 #' 
-clean.rf.data <- function(x, y, data, max.levels = 30) {
+cleanRFdata <- function(x, y, data, max.levels = 30) {
   data <- as.data.frame(data)
   if (is.null(colnames(data))) colnames(data) <- 1:ncol(data)
   x <- setdiff(x, y)

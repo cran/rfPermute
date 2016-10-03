@@ -25,9 +25,9 @@ A matrix with the following columns for each class and overall:
 Calculate confidence intervals for Random Forest classifications
 }
 \examples{
-data(mtcars)
+data(symb.metab)
 
-rf <- randomForest(factor(am) ~ ., mtcars, importance = TRUE)
+rf <- randomForest(type ~ ., symb.metab)
 classConfInt(rf)
 
 }

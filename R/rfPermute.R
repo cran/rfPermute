@@ -1,5 +1,5 @@
 #' @name rfPermute
-#' @title Estimate Permutation p-values for Random Forest Importance Metrics.
+#' @title Estimate Permutation p-values for Random Forest Importance Metrics
 #' @description Estimate significance of importance metrics for a Random Forest 
 #'   model by permuting the response variable. Produces null distribution of 
 #'   importance metrics for each predictor variable and p-value of observed.
@@ -28,10 +28,10 @@
 #' @keywords tree classif regression
 #' 
 #' @seealso 
-#' \code{\link{plot.rfPermute}} for plotting null distributions from the \code{rfPermute} objects. \cr
+#' \code{\link{plotNull}} for plotting null distributions from the \code{rfPermute} objects. \cr
 #' \code{\link{rp.importance}} for extracting importance measures. \cr
 #' \code{\link{rp.combine}} for combining multiple \code{rfPermute} objects.\cr
-#' \code{\link{proximity.plot}} for plotting case proximities.\cr
+#' \code{\link{proximityPlot}} for plotting case proximities.\cr
 #' \code{\link{impHeatmap}} for plotting a heatmap of importance scores.\cr
 #' \code{\link{randomForest}}
 #'
@@ -42,7 +42,7 @@
 #'   
 #'   # Plot the null distributions and observed values.
 #'   layout(matrix(1:6, nrow = 2))
-#'   plot(ozone.rfP) 
+#'   plotNull(ozone.rfP) 
 #'   layout(matrix(1))
 #'   
 #'   # Plot the unscaled importance distributions and highlight significant predictors

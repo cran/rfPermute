@@ -1,4 +1,4 @@
-#' @title Plot Random Forest Proximity Scores.
+#' @title Plot Random Forest Proximity Scores
 #' @description Create a plot of Random Forest proximity scores using 
 #'   multi-dimensional scaling.
 #' 
@@ -27,17 +27,17 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
 #' @examples
-#' data(mtcars)
-#' rf <- randomForest(factor(am) ~ ., mtcars, proximity = TRUE)
-#' rf
-#' proximity.plot(rf)
+#' data(symb.metab)
+#'
+#' rf <- randomForest(type ~ ., symb.metab, proximity = TRUE)
+#' proximityPlot(rf)
 #' 
 #' @importFrom stats cmdscale
 #' @importFrom grDevices chull rainbow
 #' @importFrom ggplot2 ggplot aes geom_point labs theme element_blank geom_polygon element_rect
 #' @export
 #' 
-proximity.plot <- function(rf, dim.x = 1, dim.y = 2, 
+proximityPlot <- function(rf, dim.x = 1, dim.y = 2, 
                            legend.loc = c("top", "bottom", "left", "right"),
                            point.size = 2, circle.size = 8, circle.border = 1, 
                            hull.alpha = 0.3, plot = TRUE) {

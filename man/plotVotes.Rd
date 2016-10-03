@@ -4,12 +4,17 @@
 \alias{plotVotes}
 \title{Vote Distribution}
 \usage{
-plotVotes(rf, plot = TRUE)
+plotVotes(rf, type = NULL, plot = TRUE)
 }
 \arguments{
 \item{rf}{an object inheriting from \code{\link{randomForest}}.}
 
-\item{plot}{print the plot?}
+\item{type}{either \code{area} for stacked continuous area plot or 
+\code{bar} for discrete stacked bar chart. The latter is prefered for small 
+numbers of cases. If not specified, a bar chart will be used if all 
+classes have <= 30 cases.}
+
+\item{plot}{display the plot?}
 }
 \value{
 the \code{ggplot} object is invisibly returned.

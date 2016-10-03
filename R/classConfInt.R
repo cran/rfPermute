@@ -15,9 +15,9 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov} 
 #' 
 #' @examples
-#' data(mtcars)
+#' data(symb.metab)
 #'
-#' rf <- randomForest(factor(am) ~ ., mtcars, importance = TRUE)
+#' rf <- randomForest(type ~ ., symb.metab)
 #' classConfInt(rf)
 #' 
 #' @importFrom stats binom.test pbinom

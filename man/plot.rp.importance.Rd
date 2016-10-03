@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.rp.importance.R
 \name{plot.rp.importance}
 \alias{plot.rp.importance}
-\title{Plot Random Forest Importance Distributions.}
+\title{Plot Random Forest Importance Distributions}
 \usage{
 \method{plot}{rp.importance}(x, alpha = 0.05, sig.only = FALSE,
   type = NULL, n = NULL, main = NULL, ...)

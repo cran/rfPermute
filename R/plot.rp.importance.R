@@ -1,4 +1,4 @@
-#' @title Plot Random Forest Importance Distributions.
+#' @title Plot Random Forest Importance Distributions
 #' @description Plot the Random Forest importance distributions,
 #' with significant p-values as estimated in rfPermute.
 #' 

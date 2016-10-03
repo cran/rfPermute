@@ -9,7 +9,7 @@
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov} 
 #' 
-#' @seealso \code{\link{classConfInt}}
+#' @seealso \code{\link{classConfInt}}, \code{\link{exptdErrRate}}
 #' 
 #' @examples
 #' data(mtcars)
@@ -26,7 +26,7 @@ confusionMatrix <- function(rf, conf.level = 0.95, threshold = 0.8) {
   # Get confidence intervals
   ci <- classConfInt(rf, conf.level = conf.level, threshold = threshold)
   # Get expected error rate (prior)
-  prior <- exptd.err.rate(rf)
+  prior <- exptdErrRate(rf)
   prior <- (1 - prior[c(2:length(prior), 1)]) * 100
   # Add rows and columns
   conf <- rbind(conf, Overall = rep(NA, ncol(conf)))

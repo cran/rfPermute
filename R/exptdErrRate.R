@@ -1,16 +1,22 @@
 #' @title Expected Error Rate
-#' @description Calculate expected OOB error rates for randomForest 
-#'   classification model based on random assignment and class sizes (prior).
+#' @description Calculate expected OOB error rates (priors) for randomForest 
+#'   classification model based on random assignment and class sizes.
 #' 
 #' @param rf an object inheriting from \code{link{randomForest}}.
 #' 
-#' @return a vector of expected error rates for each class.
+#' @return a vector of expected error rates (priors) for each class.
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
+#' @examples 
+#' data(mtcars)
+#' 
+#' rf <- randomForest(factor(am) ~ ., mtcars)
+#' exptdErrRate(rf)
+#' 
 #' @export
 #' 
-exptd.err.rate <- function(rf) {
+exptdErrRate <- function(rf) {
   if(!inherits(rf, "randomForest")) {
     stop("'rf' is not a randomForest or rfPermute object.")
   }

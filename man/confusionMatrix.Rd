@@ -29,6 +29,6 @@ confusionMatrix(rf)
 Eric Archer \email{eric.archer@noaa.gov}
 }
 \seealso{
-\code{\link{classConfInt}}
+\code{\link{classConfInt}}, \code{\link{exptdErrRate}}
 }
 
