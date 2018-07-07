@@ -48,11 +48,10 @@ importance(rf)
 impHeatmap(rf, xlab = "Transmission", ylab = "Predictor")
 
 # An rfPermute model with significant predictors identified
-rp <- rfPermute(factor(am) ~ ., mtcars, nrep = 100)
+rp <- rfPermute(factor(am) ~ ., mtcars, nrep = 100, num.cores = 1)
 impHeatmap(rp, xlab = "Transmission", ylab = "Predictor")
 
 }
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }
-

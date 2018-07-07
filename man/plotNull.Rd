@@ -5,7 +5,7 @@
 \title{Plot Random Forest Importance Null Distributions}
 \usage{
 plotNull(x, preds = NULL, imp.type = NULL, scale = TRUE,
-  plot.type = c("density", "hist"))
+  plot.type = c("density", "hist"), plot = TRUE)
 }
 \arguments{
 \item{x}{An object produced by a call to \code{\link{rfPermute}}.}
@@ -20,6 +20,8 @@ importance metric(s) to plot.}
 
 \item{plot.type}{type of plot to produce: \code{"density"} for smoothed density 
 plot, or \code{"hist"} for histogram.}
+
+\item{plot}{display the plot?}
 }
 \value{
 A named list of the \code{ggplot} figures produced is invisbly returned.
@@ -38,7 +40,10 @@ The function will generate an plot for each predictor, with facetted
 \examples{
 # A regression model using the ozone example
 data(airquality)
-ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+ozone.rfP <- rfPermute(
+  Ozone ~ ., data = airquality, ntree = 100, 
+  na.action = na.omit, nrep = 50, num.cores = 1
+)
   
 # Plot the null distributions and observed values.
 plotNull(ozone.rfP) 
@@ -47,4 +52,3 @@ plotNull(ozone.rfP)
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }
-

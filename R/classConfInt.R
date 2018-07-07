@@ -24,10 +24,10 @@
 #' @export
 #' 
 classConfInt <- function(rf, conf.level = 0.95, threshold = 0.8) {
-  conf <- rf$confusion
+  conf <- .confMat(rf)
   result <- t(sapply(1:nrow(conf), function(i) {
     correct <- conf[i, i]
-    n <- sum(conf[i, -ncol(conf)])
+    n <- sum(conf[i, ])
     ci <- binom.test(correct, n, correct / n, conf.level = conf.level)$conf.int
     names(ci) <- paste(c("LCI", "UCI"), conf.level, sep = "_")
     prob.gt <- pbinom(correct, n, threshold)
@@ -35,8 +35,8 @@ classConfInt <- function(rf, conf.level = 0.95, threshold = 0.8) {
     c(pct.correct = correct / n, ci, prob.gt)
   }))
   rownames(result) <- rownames(conf)
-  n <- sum(conf[, -ncol(conf)])
-  correct <- sum(diag(conf[, -ncol(conf)]))
+  n <- sum(conf)
+  correct <- sum(diag(conf))
   ci <- binom.test(correct, n, correct / n, conf.level = conf.level)$conf.int
   prob.gt <- pbinom(correct, n, threshold)
   rbind(result, Overall = c(correct / n, ci, prob.gt))

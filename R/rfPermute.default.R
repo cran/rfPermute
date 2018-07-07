@@ -1,10 +1,9 @@
 #' @rdname rfPermute
 #' 
-#' @importFrom parallel makeForkCluster parLapply stopCluster detectCores makePSOCKcluster
 #' @export rfPermute.default
 #' @export
 #' 
-rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {  
+rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = NULL) {  
   orig.call <- match.call()
   orig.call$nrep <- NULL
   orig.call$num.cores <- NULL
@@ -24,41 +23,33 @@ rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {
   
   # permutes 'y' in rf.call 'nrep' times and runs randomForest  
   if(nrep > 0) {
-    # define permutation function
-    #   returns a 3-dimensional array of unscaled and scaled importance scores
-    permFunc <- function(y, perm.rf.call) {
-      rf.call$y <- y
-      perm.rf <- eval(rf.call)
-      imp <- perm.rf$importance
-      impSD <- perm.rf$importanceSD
-      rm(perm.rf)
-      imp.arr <- .makeImpArray(imp, 2, c("unscaled", "scaled"))
-      imp.arr[, , 2] <- .scaleImp(imp, impSD)
-      return(imp.arr)
-    }
-    
-    # create list of permuted y values
-    ran.y <- lapply(1:nrep, function(i) sample(rf.call$y))
-    
-    # get importance scores for permutations
-    #  a list of 3-dimensional arrays of importance scores
-    null.dist <- NULL
-    
-    if(is.null(num.cores)) num.cores <- detectCores() - 1
+    # Setup number of cores
+    if(is.null(num.cores)) num.cores <- parallel::detectCores() - 1
     if(is.na(num.cores)) num.cores <- 1
     num.cores <- max(1, num.cores)
-    num.cores <- min(num.cores, detectCores() - 1)
-    if(num.cores > 1) {
-      is.windows <- .Platform$OS.type == "windows"
-      cl <- if(is.windows) makePSOCKcluster(num.cores) else makeForkCluster(num.cores)
-      tryCatch({
-        null.dist <- parLapply(cl, ran.y, permFunc, perm.rf.call = rf.call)
-      }, finally = {
-        stopCluster(cl)
-        closeAllConnections()
-      })
+    num.cores <- min(parallel::detectCores() - 1, num.cores)
+    
+    # Create list of permuted y values
+    ran.y <- lapply(1:nrep, function(i) sample(rf.call$y))
+    
+    # Get importance scores for permutations
+    #  a list of 3-dimensional arrays of importance scores
+    null.dist <- if(num.cores == 1) {
+      # Don't use parallelizing if num.cores == 1      
+      lapply(ran.y, .permFunc, x = x, perm.rf.call = rf.call)
+    } else if(Sys.info()[["sysname"]] %in% c("Linux", "Darwin")) {
+      # Run random forest on Linux or Macs using mclapply
+      parallel::mclapply(
+        ran.y, .permFunc, x = x, perm.rf.call = rf.call, mc.cores = num.cores
+      )
     } else {
-      null.dist <- lapply(ran.y, permFunc)
+      # Run random forest using parLapply
+      tryCatch({
+        cl <- parallel::makeCluster(num.cores)
+        parallel::clusterEvalQ(cl, require(randomForest))
+        parallel::clusterExport(cl, "x", "rf.call", environment())
+        parallel::parLapply(cl, ran.y, .permFunc, x = x, perm.rf.call = rf.call)
+      }, finally = parallel::stopCluster(cl))
     }
     
     # create and load null distribution arrays for each scaled and unscaled importances

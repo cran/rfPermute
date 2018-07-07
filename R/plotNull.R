@@ -12,6 +12,7 @@
 #' @param scale Plot importance measures scaled (divided by) standard errors?
 #' @param plot.type type of plot to produce: \code{"density"} for smoothed density 
 #'   plot, or \code{"hist"} for histogram.
+#' @param plot display the plot?
 #' 
 #' @details The function will generate an plot for each predictor, with facetted 
 #'   importance metrics. The vertical red line shows the observed importance 
@@ -24,18 +25,19 @@
 #' @examples
 #' # A regression model using the ozone example
 #' data(airquality)
-#' ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+#' ozone.rfP <- rfPermute(
+#'   Ozone ~ ., data = airquality, ntree = 100, 
+#'   na.action = na.omit, nrep = 50, num.cores = 1
+#' )
 #'   
 #' # Plot the null distributions and observed values.
 #' plotNull(ozone.rfP) 
 #' 
 #' @importFrom reshape2 melt
-#' @importFrom ggplot2 ggplot aes_string geom_histogram geom_density xlab
-#'   ggtitle geom_vline facet_wrap
 #' @export
 #' 
 plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE, 
-                     plot.type = c("density", "hist")) {
+                     plot.type = c("density", "hist"), plot = TRUE) {
   
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
   imp <- randomForest::importance(x, type = NULL, class = NULL, scale = scale)
@@ -64,30 +66,39 @@ plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE,
   }
   
   plot.type <- match.arg(plot.type)
-  g <- sapply(preds, function(p) {
+  g <- sapply(preds, function(pr) {
     df <- melt(
-      sapply(imp.type, function(i) x$null.dist[[sc]][p, i, ]),
+      sapply(imp.type, function(i) x$null.dist[[sc]][pr, i, ]),
       value.name = "importance",
       varnames = c("rep", "imp.type")
     )
     obs <- melt(
-      imp[p, imp.type, drop = FALSE], 
+      imp[pr, imp.type, drop = FALSE], 
       value.name = "importance",
       varnames = c("predictor", "imp.type")
     )
     
-    pval <- x$pval[p, imp.type, sc]
+    pval <- x$pval[pr, imp.type, sc]
     labels <- paste0(names(pval), "\n(p = ", sprintf("%0.3f", pval), ")")
     levels(df$imp.type) <- levels(obs$imp.type) <- labels
     
-    pl <- ggplot(df, aes_string("importance"))
-    pl <- pl + if(plot.type == "hist") geom_histogram() else geom_density()
-    pl <- pl + xlab("Importance") + ggtitle(p)
-    pl <- pl + geom_vline(aes_string(xintercept = "importance"), color = "red", data = obs) 
-    pl <- pl + facet_wrap(~imp.type, scales = "free")
+    p <- ggplot2::ggplot(df, ggplot2::aes_string("importance"))
+    p <- p + if(plot.type == "hist") {
+      ggplot2::geom_histogram() 
+    } else {
+      ggplot2::geom_density()
+    }
+    p <- p + ggplot2::xlab("Importance") + 
+      ggplot2::ggtitle(pr) +
+      ggplot2::geom_vline(
+        ggplot2::aes_string(xintercept = "importance"), 
+        color = "red", data = obs
+      ) +
+      ggplot2::facet_wrap(~imp.type, scales = "free")
       
-    print(pl)
+    return(p)
   }, simplify = FALSE, USE.NAMES = TRUE)
   
+  if(plot) for(p in g) print(p)
   invisible(g)
 }

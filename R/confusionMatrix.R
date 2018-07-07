@@ -20,9 +20,7 @@
 #' @export
 #' 
 confusionMatrix <- function(rf, conf.level = 0.95, threshold = 0.8) {
-  conf <- rf$confusion
-  # Strip error rate column
-  conf <- conf[, -ncol(conf)]
+  conf <- .confMat(rf)
   # Get confidence intervals
   ci <- classConfInt(rf, conf.level = conf.level, threshold = threshold)
   # Get expected error rate (prior)

@@ -18,20 +18,21 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
 #' @examples
-#'   # A regression model using the ozone example
-#'   data(airquality)
-#'   ozone.rfP <- rfPermute(Ozone ~ ., data = airquality, ntree = 100, na.action = na.omit, nrep = 50)
+#' # A regression model using the ozone example
+#' data(airquality)
+#' ozone.rfP <- rfPermute(
+#'   Ozone ~ ., data = airquality, ntree = 100, 
+#'   na.action = na.omit, nrep = 50, num.cores = 1
+#' )
 #'   
-#'   # Plot the unscaled importance distributions and highlight significant predictors
-#'   plot(rp.importance(ozone.rfP, scale = FALSE))
+#' # Plot the unscaled importance distributions and highlight significant predictors
+#' plot(rp.importance(ozone.rfP, scale = FALSE))
 #'   
-#'   # ... and the scaled measures
-#'   plot(rp.importance(ozone.rfP, scale = TRUE))
+#' # ... and the scaled measures
+#' plot(rp.importance(ozone.rfP, scale = TRUE))
 #' 
 #' @seealso \code{\link{rfPermute}}, \code{\link{rp.importance}}
 #' 
-#' @importFrom ggplot2 ggplot aes geom_bar coord_flip theme scale_fill_manual ggtitle element_blank
-#' @importFrom gridExtra grid.arrange
 #' @export
 #' 
 plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE, 
@@ -58,16 +59,20 @@ plot.rp.importance <- function(x, alpha = 0.05, sig.only = FALSE,
     imp.df <- imp.df[order(imp.df$imp, decreasing = TRUE), ]
     if(sig.only) imp.df <- imp.df[as.logical(imp.df$is.sig), ]
     if(!is.null(n) & is.numeric(n)) imp.df <- imp.df[1:min(n, nrow(imp.df)), ]
-    with(imp.df, 
-         ggplot(imp.df, aes(reorder(pred, imp), imp)) + 
-           geom_bar(aes(fill = is.sig), stat = "identity") +
-           coord_flip() + ggtitle(colnames(x)[i]) + 
-           scale_fill_manual(values = c("FALSE" = "black", "TRUE" = "red")) +
-           theme(
-             legend.position = "none",
-             axis.title = element_blank()
-           )
-    )
+    imp.df$pred <- stats::reorder(imp.df$pred, imp.df$imp)
+    
+    ggplot2::ggplot(
+      imp.df, 
+      ggplot2::aes_string(x = "pred", y = "imp", fill = "is.sig") 
+    ) + 
+      ggplot2::geom_bar(stat = "identity") +
+      ggplot2::coord_flip() + 
+      ggplot2::ggtitle(colnames(x)[i]) + 
+      ggplot2::scale_fill_manual(values = c("FALSE" = "black", "TRUE" = "red")) +
+      ggplot2::theme(
+        legend.position = "none",
+        axis.title = ggplot2::element_blank()
+      )
   })
   imp.list$top <- main
   imp.list$bottom <- "Importance"

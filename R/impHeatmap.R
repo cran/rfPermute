@@ -32,11 +32,10 @@
 #' impHeatmap(rf, xlab = "Transmission", ylab = "Predictor")
 #' 
 #' # An rfPermute model with significant predictors identified
-#' rp <- rfPermute(factor(am) ~ ., mtcars, nrep = 100)
+#' rp <- rfPermute(factor(am) ~ ., mtcars, nrep = 100, num.cores = 1)
 #' impHeatmap(rp, xlab = "Transmission", ylab = "Predictor")
 #' 
 #' @importFrom reshape2 melt
-#' @importFrom ggplot2 ggplot geom_raster geom_rect scale_fill_gradient2 aes_string xlab ylab theme element_blank guide_colorbar
 #' @export
 #' 
 impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL, 
@@ -59,21 +58,30 @@ impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
   imp <- imp[imp$predictor %in% levels(imp$predictor)[(num.preds - n + 1):num.preds], ]
   imp <- droplevels(imp)
 
-  g <- ggplot(imp, aes_string("class", "predictor")) +
-    geom_raster(aes_string(fill = "value"))
+  g <- ggplot2::ggplot(imp, ggplot2::aes_string("class", "predictor")) +
+    ggplot2::geom_raster(ggplot2::aes_string(fill = "value")) + 
+    ggplot2::theme(panel.background = ggplot2::element_blank())
   g <- g + if(ranks) {
-    scale_fill_gradient2(
+    ggplot2::scale_fill_gradient2(
       "Rank", low = "#a50026", mid = "#ffffbf", high = "#313695",
-       midpoint = mean(range(imp$value)), guide = guide_colorbar(reverse = TRUE)
+       midpoint = mean(range(imp$value)), guide = ggplot2::guide_colorbar(reverse = TRUE)
     )
   } else {
-    scale_fill_gradient2(
+    ggplot2::scale_fill_gradient2(
       "MeanDecreaseAccuracy", low = "#313695", mid = "#ffffbf", high = "#a50026",
       midpoint = mean(range(imp$value))
     )
   }
-  g <- g + if(is.null(xlab)) theme(axis.title.x = element_blank()) else xlab(xlab)
-  g <- g + if(is.null(ylab)) theme(axis.title.y = element_blank()) else ylab(ylab)
+  g <- g + if(is.null(xlab)) {
+    ggplot2::theme(axis.title.x = ggplot2::element_blank())
+  } else {
+    ggplot2::xlab(xlab)
+  }
+  g <- g + if(is.null(ylab)) {
+    ggplot2::theme(axis.title.y = ggplot2::element_blank()) 
+  } else {
+    ggplot2::ylab(ylab)
+  }
   
   if(inherits(rf, "rfPermute") & !is.null(rf$pval) & !is.null(alpha))  {
     sc <- ifelse(scale, "scaled", "unscaled")
@@ -87,8 +95,8 @@ impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
     sig.df$xmax <- as.integer(sig.df$class) + 0.5
     sig.df$ymin <- as.integer(sig.df$predictor) - 0.5
     sig.df$ymax <- as.integer(sig.df$predictor) + 0.5
-    g <- g + geom_rect(
-      aes_string(xmin = "xmin", xmax = "xmax", ymin = "ymin", ymax = "ymax"),
+    g <- g + ggplot2::geom_rect(
+      ggplot2::aes_string(xmin = "xmin", xmax = "xmax", ymin = "ymin", ymax = "ymax"),
       data = sig.df, fill = NA, size = 1, color = "black"
     )
   }

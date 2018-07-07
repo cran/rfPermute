@@ -8,7 +8,7 @@
 #'   classes have <= 30 cases.
 #' @param plot display the plot?
 #'   
-#' @return the \code{ggplot} object is invisibly returned.
+#' @return the \code{ggplot2} object is invisibly returned.
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 

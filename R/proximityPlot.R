@@ -32,46 +32,43 @@
 #' rf <- randomForest(type ~ ., symb.metab, proximity = TRUE)
 #' proximityPlot(rf)
 #' 
-#' @importFrom stats cmdscale
-#' @importFrom grDevices chull rainbow
-#' @importFrom ggplot2 ggplot aes geom_point labs theme element_blank geom_polygon element_rect
 #' @export
 #' 
 proximityPlot <- function(rf, dim.x = 1, dim.y = 2, 
-                           legend.loc = c("top", "bottom", "left", "right"),
-                           point.size = 2, circle.size = 8, circle.border = 1, 
-                           hull.alpha = 0.3, plot = TRUE) {
+                          legend.loc = c("top", "bottom", "left", "right"),
+                          point.size = 2, circle.size = 8, circle.border = 1, 
+                          hull.alpha = 0.3, plot = TRUE) {
   
   if(is.null(rf$proximity)) {
     stop("'rf' has no 'proximity' element. rerun with 'proximity = TRUE'")
   }
   
-  prox.cmd <- cmdscale(1 - rf$proximity, k = max(c(dim.x, dim.y)))
+  prox.cmd <- stats::cmdscale(1 - rf$proximity, k = max(c(dim.x, dim.y)))
   prox.cmd <- prox.cmd[, c(dim.x, dim.y)]
   df <- data.frame(prox.cmd, class = rf$y, predicted = rf$predicted)
   colnames(df)[1:2] <- c("x", "y")
   
-  g <- ggplot(df, aes_string("x", "y")) 
+  g <- ggplot2::ggplot(df, ggplot2::aes_string("x", "y")) 
   
   # Add convex hulls
   if(rf$type != "regression") {
     loc.hull <- tapply(1:nrow(prox.cmd), rf$y, function(i) {
-      ch <- chull(prox.cmd[i, 1], prox.cmd[i, 2])
+      ch <- grDevices::chull(prox.cmd[i, 1], prox.cmd[i, 2])
       c(i[ch], i[ch[1]])
     })
     for(ch in 1:length(loc.hull)) {
       ch.df <- df[loc.hull[[ch]], ]
       g <- g + if(!is.null(hull.alpha)) {
-        geom_polygon(
-          aes_string("x", "y", color = "class", fill = "class"), 
+        ggplot2::geom_polygon(
+          ggplot2::aes_string("x", "y", color = "class", fill = "class"), 
           alpha = hull.alpha,
           data = ch.df, 
           inherit.aes = FALSE, 
           show.legend = FALSE
         ) 
       } else {
-        geom_polygon(
-          aes_string("x", "y", color = "class"), 
+        ggplot2::geom_polygon(
+          ggplot2::aes_string("x", "y", color = "class"), 
           fill = "transparent",
           data = ch.df, 
           inherit.aes = FALSE, 
@@ -81,21 +78,27 @@ proximityPlot <- function(rf, dim.x = 1, dim.y = 2,
     }
   }
   
-  g <- g + geom_point(aes_string(color = "class"), size = point.size) +
-    labs(x = paste("Dimension", dim.x), y = paste("Dimension", dim.y)) +
-    theme(
+  g <- g + 
+    ggplot2::geom_point(
+      ggplot2::aes_string(color = "class"), size = point.size
+    ) +
+    ggplot2::labs(
+      x = paste("Dimension", dim.x), 
+      y = paste("Dimension", dim.y)
+    ) +
+    ggplot2::theme(
       legend.position = match.arg(legend.loc),
-      legend.title = element_blank(),
-      legend.key = element_rect(color = NA, fill = NA),
-      panel.background = element_rect(color = "black", fill = NA),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
+      legend.title = ggplot2::element_blank(),
+      legend.key = ggplot2::element_rect(color = NA, fill = NA),
+      panel.background = ggplot2::element_rect(color = "black", fill = NA),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
     )
   
   # Add predicted circles
   if(!is.null(circle.size)) {
-    g <- g + geom_point(
-      aes_string(color = "predicted"), 
+    g <- g + ggplot2::geom_point(
+      ggplot2::aes_string(color = "predicted"), 
       shape = 21, 
       size = circle.size,
       stroke = circle.border,

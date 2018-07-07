@@ -25,10 +25,9 @@ rf <- randomForest(factor(am) ~ ., mtcars, importance = TRUE)
 confusionMatrix(rf)
 
 }
-\author{
-Eric Archer \email{eric.archer@noaa.gov}
-}
 \seealso{
 \code{\link{classConfInt}}, \code{\link{exptdErrRate}}
 }
-
+\author{
+Eric Archer \email{eric.archer@noaa.gov}
+}

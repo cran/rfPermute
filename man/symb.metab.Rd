@@ -18,4 +18,3 @@ Klueter, A.; Crandall, J.B.; Archer, F.I.; Teece, M.A.; Coffroth, M.A.
   Dinoflagellates of the Genus Symbiodinium. Metabolites 2015, 5, 74-99.
 }
 \keyword{datasets}
-

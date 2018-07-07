@@ -25,4 +25,3 @@ Removes cases for a Random Forest classification model
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }
-

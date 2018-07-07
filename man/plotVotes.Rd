@@ -17,7 +17,7 @@ classes have <= 30 cases.}
 \item{plot}{display the plot?}
 }
 \value{
-the \code{ggplot} object is invisibly returned.
+the \code{ggplot2} object is invisibly returned.
 }
 \description{
 Plot distribution of votes for each sample in each class.
@@ -32,4 +32,3 @@ plotVotes(rf)
 \author{
 Eric Archer \email{eric.archer@noaa.gov}
 }
-
