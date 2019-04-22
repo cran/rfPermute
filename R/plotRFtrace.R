@@ -14,9 +14,6 @@
 #' rf <- randomForest(factor(am) ~ ., mtcars)
 #' plotRFtrace(rf)
 #' 
-#' @importFrom plyr .
-#' @importFrom magrittr %>% 
-#' @importFrom rlang .data
 #' @export
 #'
 plotRFtrace <- function(rf, plot = TRUE) {
@@ -33,7 +30,7 @@ plotRFtrace <- function(rf, plot = TRUE) {
   
   df <- as.data.frame(rf$err.rate)
   p <- df %>% 
-    dplyr::mutate(trees = 1:nrow(.)) %>% 
+    dplyr::mutate(trees = 1:dplyr::n()) %>% 
     tidyr::gather("class", "error", -.data$trees) %>% 
     dplyr::mutate(class = factor(.data$class, levels = colnames(df))) %>% 
     ggplot2::ggplot(ggplot2::aes_string("trees", "error", color = "class")) +

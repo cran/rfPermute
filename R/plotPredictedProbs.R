@@ -17,8 +17,6 @@
 #' rf <- randomForest(factor(am) ~ ., mtcars)
 #' plotPredictedProbs(rf, bins = 20)
 #' 
-#' @importFrom magrittr %>% 
-#' @importFrom rlang .data
 #' @export
 #'
 plotPredictedProbs <- function(rf, bins = 30, plot = TRUE) {

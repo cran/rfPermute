@@ -42,10 +42,15 @@ impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
                        ylab = NULL, scale = TRUE, alpha = 0.05) {
   if(rf$type != "classification") stop("'rf' must be a classification model")
   classes <- levels(rf$y)
-  if(!all(classes %in% colnames(rf$importance))) stop("'rf' must be run with 'importance = TRUE'")
+  if(!all(classes %in% colnames(rf$importance))) {
+    stop("'rf' must be run with 'importance = TRUE'")
+  }
   
   # format importance data.frame
-  imp <- data.frame(randomForest::importance(rf, scale = scale), check.names = FALSE)
+  imp <- data.frame(
+    randomForest::importance(rf, scale = scale), 
+    check.names = FALSE
+  )
   imp.val <- imp$MeanDecreaseAccuracy
   imp$predictor <- names(imp.val) <- rownames(imp)
   if(ranks) for(x in classes) imp[[x]] <- rank(-imp[[x]])
@@ -64,7 +69,8 @@ impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
   g <- g + if(ranks) {
     ggplot2::scale_fill_gradient2(
       "Rank", low = "#a50026", mid = "#ffffbf", high = "#313695",
-       midpoint = mean(range(imp$value)), guide = ggplot2::guide_colorbar(reverse = TRUE)
+       midpoint = mean(range(imp$value)), 
+      guide = ggplot2::guide_colorbar(reverse = TRUE)
     )
   } else {
     ggplot2::scale_fill_gradient2(
@@ -96,7 +102,10 @@ impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
     sig.df$ymin <- as.integer(sig.df$predictor) - 0.5
     sig.df$ymax <- as.integer(sig.df$predictor) + 0.5
     g <- g + ggplot2::geom_rect(
-      ggplot2::aes_string(xmin = "xmin", xmax = "xmax", ymin = "ymin", ymax = "ymax"),
+      ggplot2::aes_string(
+        xmin = "xmin", xmax = "xmax", 
+        ymin = "ymin", ymax = "ymax"
+      ),
       data = sig.df, fill = NA, size = 1, color = "black"
     )
   }

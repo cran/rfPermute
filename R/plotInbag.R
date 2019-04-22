@@ -18,7 +18,6 @@
 #' rf <- randomForest(factor(am) ~ ., mtcars)
 #' plotInbag(rf)
 #' 
-#' @importFrom magrittr %>% 
 #' @export
 #'
 plotInbag <- function(rf, sampsize = NULL, bins = 20, plot = TRUE) {

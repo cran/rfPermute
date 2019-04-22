@@ -40,7 +40,8 @@
 # Simple confusion matrix
 .confMat <- function(rf) cbind(table(rf$y, rf$predicted))
 
-.permFunc <- function(y, x, perm.rf.call) {
+.permFunc <- function(y, call.x, perm.rf.call) {
+  x <- call.x # required to avoid clash with clusterApply formalargument x (called from parLapply)
   perm.rf.call$y <- y
   perm.rf <- eval(perm.rf.call)
   imp <- perm.rf$importance

@@ -15,8 +15,6 @@
 #' rf <- randomForest(factor(am) ~ ., mtcars)
 #' plotConfMat(rf)
 #' 
-#' @importFrom magrittr %>% 
-#' @importFrom rlang .data
 #' @export
 #'
 plotConfMat <- function(rf, title = NULL, plot = TRUE) {
@@ -44,7 +42,11 @@ plotConfMat <- function(rf, title = NULL, plot = TRUE) {
     ) %>% 
     ggplot2::ggplot(ggplot2::aes_string("predicted", "observed")) +
     ggplot2::geom_raster(ggplot2::aes_string(fill = "prop")) +
-    viridis::scale_fill_viridis(option = "magma", direction = -1, limits = c(0, 1)) +
+    ggplot2::scale_fill_viridis_c(
+      option = "magma", 
+      direction = -1, 
+      limits = c(0, 1)
+    ) +
     ggplot2::scale_x_discrete(position = "top") +
     ggplot2::labs(x = "Predicted", y = "True", title = title) +
     ggplot2::guides(fill = ggplot2::guide_colorbar(title = "Proportion")) +

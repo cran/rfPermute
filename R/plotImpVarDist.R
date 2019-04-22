@@ -24,8 +24,6 @@
 #' rf <- randomForest(am ~ ., df, importance = TRUE)
 #' plotImpVarDist(rf, df, "am")
 #' 
-#' @importFrom magrittr %>% 
-#' @importFrom rlang .data
 #' @export
 #'
 plotImpVarDist <- function(rf, df, class.col, max.vars = 16, plot = TRUE) {

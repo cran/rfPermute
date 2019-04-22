@@ -15,8 +15,6 @@
 #' rf <- randomForest(factor(am) ~ ., mtcars)
 #' plotOOBtimes(rf)
 #' 
-#' @importFrom magrittr %>% 
-#' @importFrom rlang .data
 #' @export
 #'
 plotOOBtimes <- function(rf, bins = NULL, plot = TRUE) {
