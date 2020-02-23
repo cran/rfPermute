@@ -4,8 +4,14 @@
 \alias{plotNull}
 \title{Plot Random Forest Importance Null Distributions}
 \usage{
-plotNull(x, preds = NULL, imp.type = NULL, scale = TRUE,
-  plot.type = c("density", "hist"), plot = TRUE)
+plotNull(
+  x,
+  preds = NULL,
+  imp.type = NULL,
+  scale = TRUE,
+  plot.type = c("density", "hist"),
+  plot = TRUE
+)
 }
 \arguments{
 \item{x}{An object produced by a call to \code{\link{rfPermute}}.}

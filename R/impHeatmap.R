@@ -35,7 +35,6 @@
 #' rp <- rfPermute(factor(am) ~ ., mtcars, nrep = 100, num.cores = 1)
 #' impHeatmap(rp, xlab = "Transmission", ylab = "Predictor")
 #' 
-#' @importFrom reshape2 melt
 #' @export
 #' 
 impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL, 
@@ -54,15 +53,18 @@ impHeatmap <- function(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
   imp.val <- imp$MeanDecreaseAccuracy
   imp$predictor <- names(imp.val) <- rownames(imp)
   if(ranks) for(x in classes) imp[[x]] <- rank(-imp[[x]])
-  imp <- melt(imp[, c("predictor", classes)], id.vars = "predictor",
-              variable.name = "class", value.name = "value")
-  imp$class <- factor(imp$class, levels = levels(rf$y))
-  imp$predictor <- factor(imp$predictor, levels = names(sort(imp.val)))
+  imp <- imp[, c("predictor", classes)] %>% 
+    tidyr::gather("class", "value", -.data$predictor) %>% 
+    dplyr::mutate(
+      class = factor(.data$class, levels = levels(rf$y)),
+      predictor = factor(.data$predictor, levels = names(sort(imp.val)))
+    )
   num.preds <- length(levels(imp$predictor))
   n <- if(is.null(n)) length(levels(imp$predictor)) else min(c(n, num.preds))
   imp <- imp[imp$predictor %in% levels(imp$predictor)[(num.preds - n + 1):num.preds], ]
   imp <- droplevels(imp)
 
+  # create plot
   g <- ggplot2::ggplot(imp, ggplot2::aes_string("class", "predictor")) +
     ggplot2::geom_raster(ggplot2::aes_string(fill = "value")) + 
     ggplot2::theme(panel.background = ggplot2::element_blank())

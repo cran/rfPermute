@@ -33,12 +33,10 @@
 #' # Plot the null distributions and observed values.
 #' plotNull(ozone.rfP) 
 #' 
-#' @importFrom reshape2 melt
 #' @export
 #' 
 plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE, 
                      plot.type = c("density", "hist"), plot = TRUE) {
-  
   if(!inherits(x, "rfPermute")) stop("'x' is not of class 'rfPermute'")
   imp <- randomForest::importance(x, type = NULL, class = NULL, scale = scale)
   
@@ -67,16 +65,13 @@ plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE,
   
   plot.type <- match.arg(plot.type)
   g <- sapply(preds, function(pr) {
-    df <- melt(
-      sapply(imp.type, function(i) x$null.dist[[sc]][pr, i, ]),
-      value.name = "importance",
-      varnames = c("rep", "imp.type")
-    )
-    obs <- melt(
-      imp[pr, imp.type, drop = FALSE], 
-      value.name = "importance",
-      varnames = c("predictor", "imp.type")
-    )
+    df <- sapply(imp.type, function(i) x$null.dist[[sc]][pr, i, ]) %>% 
+      as.data.frame() %>% 
+      tidyr::gather("imp.type", "importance")
+    obs <- imp[pr, imp.type, drop = FALSE] %>% 
+      as.data.frame() %>% 
+      tibble::rownames_to_column("predictor") %>% 
+      tidyr::gather("imp.type", "importance", -.data$predictor)
     
     pval <- x$pval[pr, imp.type, sc]
     labels <- paste0(names(pval), "\n(p = ", sprintf("%0.3f", pval), ")")
@@ -88,15 +83,13 @@ plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE,
     } else {
       ggplot2::geom_density()
     }
-    p <- p + ggplot2::xlab("Importance") + 
+    p + ggplot2::xlab("Importance") + 
       ggplot2::ggtitle(pr) +
       ggplot2::geom_vline(
         ggplot2::aes_string(xintercept = "importance"), 
         color = "red", data = obs
       ) +
       ggplot2::facet_wrap(~imp.type, scales = "free")
-      
-    return(p)
   }, simplify = FALSE, USE.NAMES = TRUE)
   
   if(plot) for(p in g) print(p)

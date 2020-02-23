@@ -2,9 +2,9 @@
 % Please edit documentation in R/plotVotes.R
 \name{plotVotes}
 \alias{plotVotes}
-\title{Vote Distribution}
+\title{Plot Vote Distribution}
 \usage{
-plotVotes(rf, type = NULL, plot = TRUE)
+plotVotes(rf, type = NULL, freq.sep.line = TRUE, plot = TRUE)
 }
 \arguments{
 \item{rf}{an object inheriting from \code{\link{randomForest}}.}
@@ -13,6 +13,10 @@ plotVotes(rf, type = NULL, plot = TRUE)
 \code{bar} for discrete stacked bar chart. The latter is prefered for small 
 numbers of cases. If not specified, a bar chart will be used if all 
 classes have <= 30 cases.}
+
+\item{freq.sep.line}{put frequency of original group on second line in facet 
+label? If \code{FALSE}, labels are single line. If \code{NULL} frequencies 
+will not be included in labels.}
 
 \item{plot}{display the plot?}
 }

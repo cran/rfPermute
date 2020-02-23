@@ -17,7 +17,6 @@
 #' rf <- randomForest(factor(am) ~ ., mtcars, importance = TRUE)
 #' pctCorrect(rf)
 #' 
-#' @importFrom swfscMisc isBetween
 #' @export
 #' 
 pctCorrect <- function(rf, pct = c(seq(0.8, 0.95, 0.05), 0.99)) {
@@ -26,23 +25,27 @@ pctCorrect <- function(rf, pct = c(seq(0.8, 0.95, 0.05), 0.99)) {
   }
   pct.good <- FALSE
   if(is.numeric(pct)) {
-    zero.one <- all(isBetween(pct, 0, 1, include.ends = TRUE))
+    zero.one <- all(swfscMisc::isBetween(pct, 0, 1, include.ends = TRUE))
     if(zero.one) pct.good <- TRUE
-    zero.hundred <- all(isBetween(pct, 0, 100, include.ends = TRUE))
+    zero.hundred <- all(swfscMisc::isBetween(pct, 0, 100, include.ends = TRUE))
     if(zero.hundred & !zero.one) {
       pct <- pct / 100
       pct.good <- TRUE
     }
   }
-  if(!pct.good) stop("'pct' must be a numeric vector with values in the range of 0:1 or 0:100")
+  if(!pct.good) {
+    stop("'pct' must be a numeric vector with values in the range of 0:1 or 0:100")
+  }
   
   mat <- do.call(cbind, lapply(pct, function(p) {
     is.correct <- sapply(names(rf$y), function(id) {
-      rf$votes[id, rf$y[id]] >= p
+      rf$votes[id, rf$y[id]] >= p & rf$y[id] == rf$predicted[id]
     })
-    by.strata <- tapply(is.correct, rf$y, mean)
-    c(by.strata, Overall = mean(is.correct))
+    by.class <- tapply(is.correct, rf$y, mean)
+    c(by.class, Overall = mean(is.correct))
   }))
   colnames(mat) <- paste("pct.correct_", pct, sep = "")
-  mat * 100
+  mat <- cbind(data.frame(class = rownames(mat)), mat * 100)
+  rownames(mat) <- NULL
+  mat
 }

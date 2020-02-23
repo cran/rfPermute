@@ -4,9 +4,17 @@
 \alias{proximityPlot}
 \title{Plot Random Forest Proximity Scores}
 \usage{
-proximityPlot(rf, dim.x = 1, dim.y = 2, legend.loc = c("top",
-  "bottom", "left", "right"), point.size = 2, circle.size = 8,
-  circle.border = 1, hull.alpha = 0.3, plot = TRUE)
+proximityPlot(
+  rf,
+  dim.x = 1,
+  dim.y = 2,
+  legend.loc = c("top", "bottom", "left", "right"),
+  point.size = 2,
+  circle.size = 8,
+  circle.border = 1,
+  hull.alpha = 0.3,
+  plot = TRUE
+)
 }
 \arguments{
 \item{rf}{A \code{randomForest} object.}

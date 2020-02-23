@@ -4,8 +4,16 @@
 \alias{impHeatmap}
 \title{Importance Heatmap}
 \usage{
-impHeatmap(rf, n = NULL, ranks = TRUE, plot = TRUE, xlab = NULL,
-  ylab = NULL, scale = TRUE, alpha = 0.05)
+impHeatmap(
+  rf,
+  n = NULL,
+  ranks = TRUE,
+  plot = TRUE,
+  xlab = NULL,
+  ylab = NULL,
+  scale = TRUE,
+  alpha = 0.05
+)
 }
 \arguments{
 \item{rf}{an object inheriting from \code{\link{randomForest}}.}

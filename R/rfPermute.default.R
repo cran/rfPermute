@@ -1,9 +1,8 @@
 #' @rdname rfPermute
 #' 
-#' @export rfPermute.default
 #' @export
 #' 
-rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = NULL) {  
+rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = 1) {  
   orig.call <- match.call()
   orig.call$nrep <- NULL
   orig.call$num.cores <- NULL
@@ -35,27 +34,22 @@ rfPermute.default <- function(x, y, ..., nrep = 100, num.cores = NULL) {
     call.x <- x
     # Get importance scores for permutations
     #  a list of 3-dimensional arrays of importance scores
-    null.dist <- if(num.cores == 1) {
-      # Don't use parallelizing if num.cores == 1      
-      lapply(ran.y, .permFunc, call.x = call.x, perm.rf.call = rf.call)
-    } else if(Sys.info()[["sysname"]] %in% c("Linux", "Darwin")) {
-      # Run random forest on Linux or Macs using mclapply
-      parallel::mclapply(
-        ran.y, .permFunc, call.x = call.x, perm.rf.call = rf.call, mc.cores = num.cores
-      )
-    } else {
-      # Run random forest using parLapply
-      tryCatch({
-        cl <- parallel::makeCluster(num.cores)
+    cl <- swfscMisc::setupClusters(num.cores)
+    null.dist <- tryCatch({
+      if(is.null(cl)) { # Don't parallelize if num.cores == 1      
+        lapply(ran.y, .permFunc, call.x = call.x, perm.rf.call = rf.call)
+      } else { # Run random forest using parLapply
         parallel::clusterEvalQ(cl, require(randomForest))
         parallel::clusterExport(
           cl = cl, 
           varlist = c("call.x", "rf.call"), 
           envir = environment()
         )
-        parallel::parLapply(cl, ran.y, .permFunc, call.x = call.x, perm.rf.call = rf.call)
-      }, finally = parallel::stopCluster(cl))
-    }
+        parallel::parLapplyLB(
+          cl, ran.y, .permFunc, call.x = call.x, perm.rf.call = rf.call
+        )
+      }
+    }, finally = if(!is.null(cl)) parallel::stopCluster(cl) else NULL)
     
     # create and load null distribution arrays for each scaled and unscaled importances
     rf$null.dist <- list(unscaled = .makeImpArray(rf$importance, nrep, NULL))

@@ -38,7 +38,12 @@
 }
 
 # Simple confusion matrix
-.confMat <- function(rf) cbind(table(rf$y, rf$predicted))
+.confMat <- function(rf) {
+  if(!inherits(rf, "randomForest")) {
+    stop("'rf' must be a randomForest object or inherit from one")
+  }
+  cbind(table(rf$y, rf$predicted))
+}
 
 .permFunc <- function(y, call.x, perm.rf.call) {
   x <- call.x # required to avoid clash with clusterApply formalargument x (called from parLapply)

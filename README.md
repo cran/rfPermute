@@ -39,6 +39,7 @@ devtools::install_github('EricArcher/rfPermute')
 
 ## Current Functions
 
+`casePredictions` Return predictions and votes for training cases
 `classConfInt` Classification Confidence Intervals  
 `cleanRFdata` Clean Random Forest Input Data  
 `confusionMatrix` Confusion Matrix  
@@ -59,11 +60,17 @@ devtools::install_github('EricArcher/rfPermute')
 `rp.combine` Combine rfPermute Objects  
 `rp.importance` Extract rfPermute Importance Scores and p-values  
 
-## version 2.1.7 (devel)
+## version 2.1.8 (devel)
+
+* Fixed bug in `pctCorrect`
+* Added `casePredictions`
+* Updated parallel code
+
+## version 2.1.7 (on CRAN)
 
 * Fixed bug in parallel processing code.  
 
-## version 2.1.6 (on CRAN)
+## version 2.1.6
 
 * Added `plotConfMat`, `plotOOBtimes`, `plotRFtrace`, and `plotInbag`, and `plotImpVarDist` visualizations.  
 * Changed `confusionMatrix` so it will work when `randomForest` model doesn't have a `$confusion` element, like when model is result of `combine`-ing multiple models.   
