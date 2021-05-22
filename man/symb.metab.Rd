@@ -4,7 +4,9 @@
 \name{symb.metab}
 \alias{symb.metab}
 \title{Symbiodinium type metabolite profiles}
-\format{data.frame}
+\format{
+data.frame
+}
 \usage{
 data(symb.metab)
 }

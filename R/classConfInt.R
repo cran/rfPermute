@@ -23,21 +23,25 @@
 #' @importFrom stats binom.test pbinom
 #' @export
 #' 
-classConfInt <- function(rf, conf.level = 0.95, threshold = 0.8) {
+classConfInt <- function(rf, conf.level = 0.95, threshold = NULL) {
   conf <- .confMat(rf)
   result <- t(sapply(1:nrow(conf), function(i) {
     correct <- conf[i, i]
     n <- sum(conf[i, ])
     ci <- binom.test(correct, n, correct / n, conf.level = conf.level)$conf.int
     names(ci) <- paste(c("LCI", "UCI"), conf.level, sep = "_")
-    prob.gt <- pbinom(correct, n, threshold)
-    names(prob.gt) <- paste("Pr.gt_", threshold, sep = "")
+    prob.gt <- if(!is.null(threshold)) {
+      pbinom(correct, n, threshold)
+    } else NULL
+    if(!is.null(prob.gt)) names(prob.gt) <- paste("Pr.gt_", threshold, sep = "")
     c(pct.correct = correct / n, ci, prob.gt)
   }))
   rownames(result) <- rownames(conf)
   n <- sum(conf)
   correct <- sum(diag(conf))
   ci <- binom.test(correct, n, correct / n, conf.level = conf.level)$conf.int
-  prob.gt <- pbinom(correct, n, threshold)
+  prob.gt <- if(!is.null(threshold)) {
+    pbinom(correct, n, threshold)
+  } else NULL
   rbind(result, Overall = c(correct / n, ci, prob.gt))
 }

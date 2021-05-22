@@ -4,7 +4,7 @@
 \alias{classConfInt}
 \title{Classification Confidence Intervals}
 \usage{
-classConfInt(rf, conf.level = 0.95, threshold = 0.8)
+classConfInt(rf, conf.level = 0.95, threshold = NULL)
 }
 \arguments{
 \item{rf}{a \code{\link[randomForest]{randomForest}} object}

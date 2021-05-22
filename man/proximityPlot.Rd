@@ -8,38 +8,61 @@ proximityPlot(
   rf,
   dim.x = 1,
   dim.y = 2,
+  class.cols = NULL,
+  legend.type = c("legend", "label", "none"),
   legend.loc = c("top", "bottom", "left", "right"),
   point.size = 2,
   circle.size = 8,
   circle.border = 1,
-  hull.alpha = 0.3,
+  group.type = c("ellipse", "hull", "contour", "none"),
+  group.alpha = 0.3,
+  ellipse.level = 0.95,
+  n.contour.grid = 100,
+  label.size = 4,
+  label.alpha = 0.7,
   plot = TRUE
 )
 }
 \arguments{
-\item{rf}{A \code{randomForest} object.}
+\item{rf}{a \code{randomForest} object.}
 
-\item{dim.x, dim.y}{Numeric values giving x and y dimensions to plot from 
+\item{dim.x, dim.y}{numeric values giving x and y dimensions to plot from 
 multidimensional scaling of proximity scores.}
 
-\item{legend.loc}{Character keyword specifying location of legend. 
+\item{class.cols}{vector of colors to use for each class.}
+
+\item{legend.type}{type of legend to use to label classes.}
+
+\item{legend.loc}{character keyword specifying location of legend. 
 Can be \code{"bottom", "top", "left", "right"}.}
 
-\item{point.size}{Size of central points.}
+\item{point.size}{size of central points. Set to \code{NULL} for no points.}
 
-\item{circle.size}{Size of circles around correctly classified 
-points as argument to 'cex'. Set to NULL for no circles.}
+\item{circle.size}{size of circles around points indicating classification. S
+Set to NULL for no circles.}
 
-\item{circle.border}{Width of circle border.}
+\item{circle.border}{width of circle border.}
 
-\item{hull.alpha}{value giving alpha transparency level for convex hull shading. 
-Setting to \code{NULL} produces no shading. Ignored for regression models.}
+\item{group.type}{type of grouping to display.
+Ignored for regression models.}
+
+\item{group.alpha}{value giving alpha transparency level for group shading. 
+Setting to \code{0} produces no shading.}
+
+\item{ellipse.level}{the confidence level at which to draw the ellipse.}
+
+\item{n.contour.grid}{number of grid points for contour lines.}
+
+\item{label.size}{size of label if \code{legend.type = `label`}.}
+
+\item{label.alpha}{transparency of label background.}
 
 \item{plot}{logical determining whether or not to show plot.}
 }
 \value{
-a list with \code{prox.cmd}: the MDS scores of the selected dimensions, 
-  and \code{g} the \code{\link{ggplot}} object.
+a list with: 
+ \item{prox.mds}{the MDS scores of the selected dimensions} 
+ \item{g}{\code{\link{ggplot}} object}
 }
 \description{
 Create a plot of Random Forest proximity scores using 
@@ -49,14 +72,28 @@ Create a plot of Random Forest proximity scores using
 Produces a scatter plot of proximity scores for \code{dim.x} and 
   \code{dim.y} dimensions from a multidimensional scale (MDS) conversion of 
   proximity scores from a \code{randomForest} object. For classification 
-  models, a convex hull is drawn around the a-priori classes with points 
-  colored according to original (inner) and predicted (outer) class.
+  models, points are colored according to original (inner) 
+  and predicted (outer) class.
 }
 \examples{
 data(symb.metab)
 
 rf <- randomForest(type ~ ., symb.metab, proximity = TRUE)
+
+# With confidence ellipses
 proximityPlot(rf)
+
+# With convex hulls
+proximityPlot(rf, group.type = "hull")
+
+# With contours
+proximityPlot(rf, group.type = "contour")
+
+# Remove the points and just show ellipses
+proximityPlot(rf, point.size = NULL, circle.size = NULL, group.alpha = 0.5)
+
+# Labels instead of a legend
+proximityPlot(rf, legend.type = "label", point.size = NULL, circle.size = NULL, group.alpha = 0.5)
 
 }
 \author{

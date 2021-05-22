@@ -3,8 +3,8 @@
 [![CRAN last week downloads](http://cranlogs.r-pkg.org/badges/last-week/rfPermute?color=red)](https://cran.r-project.org/package=rfPermute)
 [![CRAN last month downloads](http://cranlogs.r-pkg.org/badges/rfPermute?color=red)](https://cran.r-project.org/package=rfPermute)
 [![CRAN total downloads](http://cranlogs.r-pkg.org/badges/grand-total/rfPermute?color=red)](https://cran.r-project.org/package=rfPermute)  
-[![Zenodo DOI](https://zenodo.org/badge/23926/EricArcher/rfPermute.svg)](https://zenodo.org/badge/latestdoi/23926/EricArcher/rfPermute)  
-[![Travis-CI Build Status](https://travis-ci.org/EricArcher/rfPermute.svg?branch=master)](https://travis-ci.org/EricArcher/rfPermute)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3685335.svg)](https://doi.org/10.5281/zenodo.3685335)   
+[![R-CMD-check](https://github.com/EricArcher/rfPermute/workflows/R-CMD-check/badge.svg)](https://github.com/EricArcher/rfPermute/actions)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/EricArcher/rfPermute?branch=master&svg=true)](https://ci.appveyor.com/project/EricArcher/rfPermute)
 
 # rfPermute
@@ -24,7 +24,7 @@ install.packages('rfPermute')
 To install the latest version from GitHub:
 
 ```r
-# make sure you have Rtools installed
+# make sure you have devtools installed
 if (!require('devtools')) install.packages('devtools')
 
 # install from GitHub
@@ -60,13 +60,20 @@ devtools::install_github('EricArcher/rfPermute')
 `rp.combine` Combine rfPermute Objects  
 `rp.importance` Extract rfPermute Importance Scores and p-values  
 
-## version 2.1.8 (devel)
+## version 2.2 (devel)
+
+* moved value of OOB expected error rate to end of output vector in `exptdErrRate`
+* changed default of `threshold` argument in `classConfInt` and `confusionMatrix` to `NULL`
+* added new grouping and labelling options to proximityPlot()
+* added binomial test for priors in `exptdErrRate` and `confusionMatrix`
+
+## version 2.1.81 (on CRAN)
 
 * Fixed bug in `pctCorrect`
 * Added `casePredictions`
 * Updated parallel code
 
-## version 2.1.7 (on CRAN)
+## version 2.1.7
 
 * Fixed bug in parallel processing code.  
 

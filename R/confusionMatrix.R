@@ -6,6 +6,8 @@
 #' @param rf a \code{\link[randomForest]{randomForest}} object.
 #' @param conf.level confidence level for the \code{\link{binom.test}} confidence interval
 #' @param threshold threshold to test observed classification probability against.
+#' @param digits integer indicating the number of decimal places to round values 
+#'   to. 
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov} 
 #' 
@@ -19,14 +21,17 @@
 #' 
 #' @export
 #' 
-confusionMatrix <- function(rf, conf.level = 0.95, threshold = 0.8) {
-  conf <- .confMat(rf)
+confusionMatrix <- function(rf, conf.level = 0.95, threshold = NULL, digits = 1) {
+  # Get confusion matrix
+  cm <- .confMat(rf)
+  cm <- rbind(cm, Overall = rep(NA, ncol(cm)))
+  
   # Get confidence intervals
   ci <- classConfInt(rf, conf.level = conf.level, threshold = threshold)
+  
   # Get expected error rate (prior)
   prior <- exptdErrRate(rf)
-  prior <- (1 - prior[c(2:length(prior), 1)]) * 100
-  # Add rows and columns
-  conf <- rbind(conf, Overall = rep(NA, ncol(conf)))
-  cbind(conf, ci * 100, Prior = prior)
+  prior[, "prior"] <- round((1 - prior[, "prior"]) * 100, digits)
+
+  cbind(cm, round(ci * 100, digits), prior)
 }

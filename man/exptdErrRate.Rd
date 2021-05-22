@@ -10,7 +10,8 @@ exptdErrRate(rf)
 \item{rf}{an object inheriting from \code{link{randomForest}}.}
 }
 \value{
-a vector of expected error rates (priors) for each class.
+a matrix of expected error rates (\code{prior}) and 
+  p-values from a binomial test (\code{class_p.value}) for each class.
 }
 \description{
 Calculate expected OOB error rates (priors) for randomForest 

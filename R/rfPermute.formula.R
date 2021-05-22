@@ -1,11 +1,9 @@
 #' @rdname rfPermute
 #' 
-#' @importFrom stats na.fail model.response model.frame terms reformulate
-#' 
 #' @export
 #' 
 rfPermute.formula <- function(formula, data = NULL, ..., subset, 
-                              na.action = na.fail, nrep = 100) {
+                              na.action = stats::na.fail, nrep = 100) {
   if (!inherits(formula, "formula")) stop("method is only for formula objects")
   m <- match.call(expand.dots = FALSE)
   if (any(c("xtest", "ytest") %in% names(m))) {
@@ -20,10 +18,15 @@ rfPermute.formula <- function(formula, data = NULL, ..., subset,
   m$na.action <- na.action
   m[[1]] <- as.name("model.frame")
   m <- eval(m, parent.frame())
-  y <- model.response(m)
+  y <- stats::model.response(m)
   Terms <- attr(m, "terms")
   attr(Terms, "intercept") <- 0
-  m <- model.frame(terms(reformulate(attributes(Terms)$term.labels)), data.frame(m))
+  m <- stats::model.frame(
+    stats::terms(
+      stats::reformulate(attributes(Terms)$term.labels)
+    ), 
+    data.frame(m)
+  )
   for (i in seq(along = ncol(m))) {
     if (is.ordered(m[[i]])) m[[i]] <- as.numeric(m[[i]])
   }

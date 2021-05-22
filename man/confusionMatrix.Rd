@@ -4,7 +4,7 @@
 \alias{confusionMatrix}
 \title{Confusion Matrix}
 \usage{
-confusionMatrix(rf, conf.level = 0.95, threshold = 0.8)
+confusionMatrix(rf, conf.level = 0.95, threshold = NULL, digits = 1)
 }
 \arguments{
 \item{rf}{a \code{\link[randomForest]{randomForest}} object.}
@@ -12,6 +12,9 @@ confusionMatrix(rf, conf.level = 0.95, threshold = 0.8)
 \item{conf.level}{confidence level for the \code{\link{binom.test}} confidence interval}
 
 \item{threshold}{threshold to test observed classification probability against.}
+
+\item{digits}{integer indicating the number of decimal places to round values 
+to.}
 }
 \description{
 Generate a confusion matrix for Random Forest analyses with 
