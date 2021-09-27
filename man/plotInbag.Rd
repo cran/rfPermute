@@ -2,31 +2,49 @@
 % Please edit documentation in R/plotInbag.R
 \name{plotInbag}
 \alias{plotInbag}
-\title{Plot inbag distribution}
+\title{Plot Inbag distribution}
 \usage{
-plotInbag(rf, sampsize = NULL, bins = 20, plot = TRUE)
+plotInbag(x, bins = 10, replace = TRUE, sampsize = NULL, plot = TRUE)
 }
 \arguments{
-\item{rf}{an object inheriting from \code{\link{randomForest}}.}
-
-\item{sampsize}{optional vector of sample sizes used in \code{rf} model.}
+\item{x}{a \code{rfPermute} or \code{randomForest} model object..}
 
 \item{bins}{number of bins in histogram.}
+
+\item{replace}{was sampling done with or without replacement?}
+
+\item{sampsize}{sizes of samples drawn. Either a}
 
 \item{plot}{display the plot?}
 }
 \value{
-the \code{ggplot2} object is invisibly returned. The red vertical 
-  lines mark the expected values for the classes in the model based on their 
-  frequency and sample sizes.
+the \code{ggplot2} object is invisibly returned.
 }
 \description{
-Plot distribution of sample inbag rates
+Plot distribution of the fraction of trees that samples were
+  inbag in the Random Forest model.
+}
+\note{
+Red vertical lines on the plot denote the expected inbag rate(s). 
+  These rates are based on the values of \code{replace} and 
+  \code{sampsize} supplied. If not specified, they are set to the 
+  \code{\link[randomForest]{randomForest}} defaults. If this is not the 
+  same as the arguments used to run the model, there will be a mismatch in 
+  the location of these indicator lines and the inbag frequency distribution.
 }
 \examples{
+library(randomForest)
 data(mtcars)
 
-rf <- randomForest(factor(am) ~ ., mtcars)
+sampsize = c(5, 5)
+
+rf <- randomForest(factor(am) ~ ., data = mtcars, ntree = 10)
+plotInbag(rf)
+
+rf <- randomForest(factor(am) ~ ., data = mtcars, ntree = 1000)
+plotInbag(rf)
+
+rf <- randomForest(factor(am) ~ ., data = mtcars, ntree = 10000)
 plotInbag(rf)
 
 }

@@ -8,20 +8,27 @@ Description: Estimate significance of importance metrics
     metrics for each predictor variable and p-value of
     observed. Provides summary and visualization functions for 'randomForest' 
     results.
-Version: 2.2
+Version: 2.5
 Authors@R: c(
   EA = person("Eric", "Archer", email = "eric.archer@noaa.gov", role = c("aut", "cre")))
 URL: https://github.com/EricArcher/rfPermute
 BugReports: https://github.com/EricArcher/rfPermute/issues
-Depends: R (>= 4.0.0), randomForest
+Depends: R (>= 4.0.0)
 Imports: abind, dplyr, ggplot2, grDevices, gridExtra, magrittr,
-        parallel, rlang, scales, stats, swfscMisc (>= 1.4), tibble,
-        tidyr, utils
+        methods, parallel, randomForest, rlang, plyr, scales, stats,
+        swfscMisc (>= 1.5), tibble, tidyr, utils
+Collate: rfPermute_package.R dataSets.R internals.R rfPermute.R
+        summary.R importance.R combineRP.R classPriors.R
+        confusionMatrix.R casePredictions.R pctCorrect.R plotInbag.R
+        plotImpPreds.R plotNull.R plotPredictedProbs.R plotProximity.R
+        plotTrace.R plotVotes.R balancedSampsize.R cleanRFdata.R
+LazyData: TRUE
 License: GPL (>= 2)
-RoxygenNote: 7.1.1
+Encoding: UTF-8
+RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2021-05-21 17:14:15 UTC; ericarcher
+Packaged: 2021-09-23 18:30:06 UTC; ericarcher
 Author: Eric Archer [aut, cre]
 Maintainer: Eric Archer <eric.archer@noaa.gov>
 Repository: CRAN
-Date/Publication: 2021-05-22 05:10:06 UTC
+Date/Publication: 2021-09-27 14:10:05 UTC

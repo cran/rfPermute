@@ -19,18 +19,16 @@
 }
 
 # Calculate importance p-values from null distribution and observed importances
-# rp: rfPermute object
-#' @importFrom swfscMisc pVal
-.calcImpPval <- function(rp) {
+# x: a list with randomForest elements and $null.dist 
+.calcImpPval <- function(rf, null.dist) {
   calcPval <- function(obs, null) {
     t(sapply(1:nrow(null), function(i) {
       sapply(1:ncol(null), function(j) swfscMisc::pVal(obs[i, j], null[i, j, ]))
     }))
   }
-  imp <- rp$importance
-  impSD <- rp$importanceSD
-  null.dist <- rp$null.dist
-  rm(rp)
+  imp <- rf$importance
+  impSD <- rf$importanceSD
+  rm(rf)
   arr <- .makeImpArray(calcPval(imp, null.dist$unscaled), 2, NULL)
   arr[, , 2] <- calcPval(.scaleImp(imp, impSD), null.dist$scaled)
   dimnames(arr) <- list(rownames(imp), colnames(imp), c("unscaled", "scaled"))
@@ -46,7 +44,7 @@
 }
 
 .permFunc <- function(y, call.x, perm.rf.call) {
-  x <- call.x # required to avoid clash with clusterApply formalargument x (called from parLapply)
+  x <- call.x # required to avoid clash with clusterApply formal argument x (called from parLapply)
   perm.rf.call$y <- y
   perm.rf <- eval(perm.rf.call)
   imp <- perm.rf$importance

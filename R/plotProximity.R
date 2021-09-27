@@ -2,7 +2,7 @@
 #' @description Create a plot of Random Forest proximity scores using 
 #'   multi-dimensional scaling.
 #' 
-#' @param rf a \code{randomForest} object.
+#' @param x a \code{rfPermute} or \code{randomForest} model object.
 #' @param dim.x,dim.y numeric values giving x and y dimensions to plot from 
 #'   multidimensional scaling of proximity scores.
 #' @param class.cols vector of colors to use for each class.
@@ -10,7 +10,7 @@
 #' @param legend.loc character keyword specifying location of legend. 
 #'   Can be \code{"bottom", "top", "left", "right"}.
 #' @param point.size size of central points. Set to \code{NULL} for no points.
-#' @param circle.size size of circles around points indicating classification. S
+#' @param circle.size size of circles around points indicating classification.
 #'   Set to NULL for no circles.
 #' @param circle.border width of circle border.
 #' @param group.type type of grouping to display.
@@ -36,36 +36,38 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
 #' @examples
+#' library(randomForest)
 #' data(symb.metab)
 #'
 #' rf <- randomForest(type ~ ., symb.metab, proximity = TRUE)
 #' 
 #' # With confidence ellipses
-#' proximityPlot(rf)
+#' plotProximity(rf)
 #' 
 #' # With convex hulls
-#' proximityPlot(rf, group.type = "hull")
+#' plotProximity(rf, group.type = "hull")
 #' 
 #' # With contours
-#' proximityPlot(rf, group.type = "contour")
+#' plotProximity(rf, group.type = "contour")
 #' 
 #' # Remove the points and just show ellipses
-#' proximityPlot(rf, point.size = NULL, circle.size = NULL, group.alpha = 0.5)
+#' plotProximity(rf, point.size = NULL, circle.size = NULL, group.alpha = 0.5)
 #' 
 #' # Labels instead of a legend
-#' proximityPlot(rf, legend.type = "label", point.size = NULL, circle.size = NULL, group.alpha = 0.5)
+#' plotProximity(rf, legend.type = "label", point.size = NULL, circle.size = NULL, group.alpha = 0.5)
 #' 
 #' @export
 #' 
-proximityPlot <- function(rf, dim.x = 1, dim.y = 2, class.cols = NULL,
-                           legend.type = c("legend", "label", "none"),
-                           legend.loc = c("top", "bottom", "left", "right"),
-                           point.size = 2, circle.size = 8, circle.border = 1, 
-                           group.type = c("ellipse", "hull", "contour", "none"),
-                           group.alpha = 0.3, ellipse.level = 0.95, 
-                           n.contour.grid = 100, label.size = 4, 
-                           label.alpha = 0.7, plot = TRUE) {
+plotProximity <- function(x, dim.x = 1, dim.y = 2, class.cols = NULL,
+                          legend.type = c("legend", "label", "none"),
+                          legend.loc = c("top", "bottom", "left", "right"),
+                          point.size = 2, circle.size = 8, circle.border = 1, 
+                          group.type = c("ellipse", "hull", "contour", "none"),
+                          group.alpha = 0.3, ellipse.level = 0.95, 
+                          n.contour.grid = 100, label.size = 4, 
+                          label.alpha = 0.7, plot = TRUE) {
   
+  rf <- as.randomForest(x)
   if(is.null(rf$proximity)) {
     stop("'rf' has no 'proximity' element. rerun with 'proximity = TRUE'")
   }

@@ -2,34 +2,50 @@
 % Please edit documentation in R/confusionMatrix.R
 \name{confusionMatrix}
 \alias{confusionMatrix}
+\alias{plotConfMat}
 \title{Confusion Matrix}
 \usage{
-confusionMatrix(rf, conf.level = 0.95, threshold = NULL, digits = 1)
+confusionMatrix(x, conf.level = 0.95, threshold = NULL)
+
+plotConfMat(x, title = NULL, plot = TRUE)
 }
 \arguments{
-\item{rf}{a \code{\link[randomForest]{randomForest}} object.}
+\item{x}{a \code{rfPermute} or \code{randomForest} model object.}
 
-\item{conf.level}{confidence level for the \code{\link{binom.test}} confidence interval}
+\item{conf.level}{confidence level for the \code{\link{binom.test}} 
+confidence interval}
 
-\item{threshold}{threshold to test observed classification probability against.}
+\item{threshold}{threshold to test observed classification 
+probability against. Should be a number between 0 and 1. 
+If not \code{NULL}, the output matrix will have extra 
+columns giving the one-tailed probability that the true correct 
+classification is >= \code{threshold}.}
 
-\item{digits}{integer indicating the number of decimal places to round values 
-to.}
+\item{title}{a title for the plot.}
+
+\item{plot}{display the plot?}
 }
 \description{
-Generate a confusion matrix for Random Forest analyses with 
-  error rates translated into percent correctly classified, and columns for 
-  confidence intervals and expected classification rates (priors) added.
+Generate a confusion matrix for Random Forest classification 
+  models with error rates translated into percent correctly classified, 
+  and columns for confidence intervals added.
 }
 \examples{
+library(randomForest)
 data(mtcars)
 
-rf <- randomForest(factor(am) ~ ., mtcars, importance = TRUE)
+rf <- randomForest(factor(am) ~ ., mtcars)
 confusionMatrix(rf)
+
+confusionMatrix(rf, conf.level = 0.75)
+
+confusionMatrix(rf, threshold = 0.7)
+confusionMatrix(rf, threshold = 0.8)
+confusionMatrix(rf, threshold = 0.95)
 
 }
 \seealso{
-\code{\link{classConfInt}}, \code{\link{exptdErrRate}}
+\code{\link{classPriors}}
 }
 \author{
 Eric Archer \email{eric.archer@noaa.gov}

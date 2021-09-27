@@ -4,10 +4,10 @@
 \alias{plotPredictedProbs}
 \title{Plot Predicted Probabilities}
 \usage{
-plotPredictedProbs(rf, bins = 30, plot = TRUE)
+plotPredictedProbs(x, bins = 30, plot = TRUE)
 }
 \arguments{
-\item{rf}{an object inheriting from \code{\link{randomForest}}.}
+\item{x}{a \code{rfPermute} or \code{randomForest} model object.}
 
 \item{bins}{number of bins in histogram. Defaults to number of samples / 5.}
 
@@ -19,9 +19,11 @@ the \code{ggplot2} object is invisibly returned.
 \description{
 Plot histogram of assignment probabilities to predicted class. 
   This is used for determining if the model differentiates between correctly 
-  and incorrectly classified samples in terms of how well they ar classified.
+  and incorrectly classified samples in terms of how strongly they are 
+  classified.
 }
 \examples{
+library(randomForest)
 data(mtcars)
 
 rf <- randomForest(factor(am) ~ ., mtcars)

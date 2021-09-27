@@ -1,9 +1,10 @@
 #' @title Plot Predicted Probabilities
 #' @description Plot histogram of assignment probabilities to predicted class. 
 #'   This is used for determining if the model differentiates between correctly 
-#'   and incorrectly classified samples in terms of how well they ar classified.
+#'   and incorrectly classified samples in terms of how strongly they are 
+#'   classified.
 #' 
-#' @param rf an object inheriting from \code{\link{randomForest}}.
+#' @param x a \code{rfPermute} or \code{randomForest} model object.
 #' @param bins number of bins in histogram. Defaults to number of samples / 5.
 #' @param plot display the plot?
 #'   
@@ -12,6 +13,7 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
 #' @examples
+#' library(randomForest)
 #' data(mtcars)
 #' 
 #' rf <- randomForest(factor(am) ~ ., mtcars)
@@ -19,7 +21,10 @@
 #' 
 #' @export
 #'
-plotPredictedProbs <- function(rf, bins = 30, plot = TRUE) {
+plotPredictedProbs <- function(x, bins = 30, plot = TRUE) {
+  rf <- as.randomForest(x)
+  if(rf$type == "regression") stop("'rf' must be of a classification model")
+  
   p <- rf$votes %>% 
     as.data.frame %>% 
     cbind(
@@ -32,6 +37,7 @@ plotPredictedProbs <- function(rf, bins = 30, plot = TRUE) {
     ggplot2::ggplot(ggplot2::aes_string("prob", fill = "class")) +
     ggplot2::geom_histogram(bins = bins) +
     ggplot2::facet_wrap(~ predicted) +
+    ggplot2::labs(x = "Assignment probability", y = "Frequency") +
     ggplot2::theme(legend.title = ggplot2::element_blank())
   
   if(plot) print(p)

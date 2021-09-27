@@ -4,24 +4,27 @@
 \alias{casePredictions}
 \title{Case Predictions}
 \usage{
-casePredictions(rf)
+casePredictions(x)
 }
 \arguments{
-\item{rf}{an object inheriting from \code{\link{randomForest}}.}
+\item{x}{a \code{rfPermte} or \code{randomForest} model object.}
 }
 \value{
 A data frame containing columns of original and predicted cases,
-  whether they were correctly classified, and vote distributions.
+  whether they were correctly classified, and vote distributions among cases.
 }
 \description{
-Get data frame of case predictions for training data along with 
-  vote distributions.
+Construct a data frame of case predictions for 
+  training data along with vote distributions.
 }
 \examples{
+library(randomForest)
 data(mtcars)
 
 rf <- randomForest(factor(am) ~ ., mtcars)
-casePredictions(rf)
+
+cp <- casePredictions(rf)
+cp
 
 }
 \author{

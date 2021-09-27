@@ -1,31 +1,34 @@
 #' @title Case Predictions
-#' @description Get data frame of case predictions for training data along with 
-#'   vote distributions.
+#' @description Construct a data frame of case predictions for 
+#'   training data along with vote distributions.
 #' 
-#' @param rf an object inheriting from \code{\link{randomForest}}.
+#' @param x a \code{rfPermte} or \code{randomForest} model object.
 #'   
 #' @return A data frame containing columns of original and predicted cases,
-#'   whether they were correctly classified, and vote distributions.
+#'   whether they were correctly classified, and vote distributions among cases.
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
 #' @examples
+#' library(randomForest)
 #' data(mtcars)
 #' 
 #' rf <- randomForest(factor(am) ~ ., mtcars)
-#' casePredictions(rf)
 #' 
+#' cp <- casePredictions(rf)
+#' cp
+#'
 #' @export
 #'
-casePredictions <- function(rf) {    
-  if(!inherits(rf, "randomForest")) {
-    stop("'rf' must be a randomForest object or inherit from one")
-  }
+casePredictions <- function(x) {    
+  rf <- as.randomForest(x)
   if(rf$type != "classification") stop("'rf' must be a classification model")
 
+  id <- names(rf$y)
+  if(is.null(id)) id <- as.character(1:length(rf$y))
   df <- cbind(
     data.frame(
-      case.id = names(rf$y),
+      id = id,
       original = rf$y,
       predicted = rf$predicted,
       is.correct = rf$y == rf$predicted

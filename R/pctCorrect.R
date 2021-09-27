@@ -1,8 +1,9 @@
 #' @title Percent Correctly Classified
-#' @description Calculate the percent of individuals correctly classified in 
-#'   a specified percent of trees in the forest.
+#' @description For classification models, calculate the percent of 
+#'   individuals correctly classified in a specified percent of trees in 
+#'   the forest.
 #' 
-#' @param rf a \code{\link[randomForest]{randomForest}} or \code{rfPermute} object.
+#' @param x a \code{rfPermte} or \code{randomForest} model object.
 #' @param pct vector of minimum percent of trees voting for each class. Can be 
 #'   \code{0:1} or \code{0:100}.
 #' 
@@ -12,6 +13,7 @@
 #' @author Eric Archer \email{eric.archer@@noaa.gov} 
 #' 
 #' @examples
+#' library(randomForest)
 #' data(mtcars)
 #'
 #' rf <- randomForest(factor(am) ~ ., mtcars, importance = TRUE)
@@ -19,10 +21,10 @@
 #' 
 #' @export
 #' 
-pctCorrect <- function(rf, pct = c(seq(0.8, 0.95, 0.05), 0.99)) {
-  if(!inherits(rf, "randomForest")) {
-    stop("'rf' must be a randomForest object or inherit from one")
-  }
+pctCorrect <- function(x, pct = c(seq(0.8, 0.95, 0.05), 0.99)) {
+  rf <- as.randomForest(x)
+  if(rf$type == "regression") stop("'rf' must be of a classification model")
+  
   pct.good <- FALSE
   if(is.numeric(pct)) {
     zero.one <- all(swfscMisc::isBetween(pct, 0, 1, include.ends = TRUE))

@@ -11,7 +11,6 @@
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 
-#' @importFrom stats complete.cases
 #' @export
 #' 
 cleanRFdata <- function(x, y, data, max.levels = 30) {
@@ -21,7 +20,7 @@ cleanRFdata <- function(x, y, data, max.levels = 30) {
   if (is.numeric(x)) x <- colnames(data)[x]
   if (is.numeric(y)) y <- colnames(data)[y]
   sub.df <- data[, c(y, x)]
-  sub.df <- sub.df[complete.cases(sub.df), , drop = TRUE]
+  sub.df <- sub.df[stats::complete.cases(sub.df), , drop = TRUE]
   
   delete.pred <- sapply(x, function(pred){
     pred.vec <- sub.df[[pred]]
