@@ -5,7 +5,8 @@
 #' @param x a \code{rfPermute} or \code{randomForest} model object..
 #' @param bins number of bins in histogram.
 #' @param replace was sampling done with or without replacement?
-#' @param sampsize sizes of samples drawn. Either a 
+#' @param sampsize sizes of samples drawn. Either a single value or vector of 
+#'   sample sizes as long as the number of classes.
 #' @param plot display the plot?
 #'   
 #' @note Red vertical lines on the plot denote the expected inbag rate(s). 

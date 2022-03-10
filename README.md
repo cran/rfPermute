@@ -6,10 +6,10 @@
 [![R-CMD-check](https://github.com/EricArcher/rfPermute/workflows/R-CMD-check/badge.svg)](https://github.com/EricArcher/rfPermute/actions)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/EricArcher/rfPermute?branch=master&svg=true)](https://ci.appveyor.com/project/EricArcher/rfPermute)
 
-# rfPermute [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4780877.svg)](https://doi.org/10.5281/zenodo.4780877) 
+# rfPermute [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5532822.svg)](https://doi.org/10.5281/zenodo.5532822)
 
 ## Description
-`rfPermute` estimates the significance of importance metrics for a Random Forest model by permuting the response variable. It will produce null distributions of importance metrics for each predictor variable and _p_-values of observed importances. The package also includes several summary and visualization functions for `randomForest` and `rfPermute` results. See `rfPermuteTutorial()` (under construction) in the package for a guide on running, summarizing, and diagnosing `rfPermute` and `randomForest` models.
+`rfPermute` estimates the significance of importance metrics for a Random Forest model by permuting the response variable. It will produce null distributions of importance metrics for each predictor variable and _p_-values of observed importances. The package also includes several summary and visualization functions for `randomForest` and `rfPermute` results. See `rfPermuteTutorial()` in the package for a guide on running, summarizing, and diagnosing `rfPermute` and `randomForest` models.
 
 ## Contact
 * submit suggestions and bug-reports: <https://github.com/ericarcher/rfPermute/issues>
@@ -59,7 +59,11 @@ devtools::install_github('EricArcher/rfPermute')
 
 ## Changelog
 
-### version 2.5 (devel)
+### version 2.5.1 (devel)
+
+* added `pct.correct` argument to `plotTrace()`. Default is now to have y-axis as 1 - OOB error rate.
+
+### version 2.5 (CRAN)
 
 __NOTE__: v2.5 is a large redevelopment of the package. The structure of rfPermute model objects has changed make them incompatible with previous versions. Also, the name and functionality of several functions has changed to make them more consistent with one another.
 A tutorial (under construction) is available within the package as `rfPermuteTutorial()`.

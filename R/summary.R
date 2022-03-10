@@ -27,18 +27,13 @@
 #' @export
 #' 
 summary.randomForest <- function(object, ...) {
-  p.trace <- plotTrace(object, plot = F)
-  p.bag <- plotInbag(object, plot = F, ...)
   print(object, ...)
-  plot(gridExtra::grid.arrange(p.trace, p.bag, nrow = 2))
+  print(plotTrace(object, plot = F))
 }
 
 #' @rdname summary
 #' @export
 #' 
 summary.rfPermute <- function(object, ...) {
-  p.trace <- plotTrace(object, plot = F)
-  p.bag <- plotInbag(object, plot = F, ...)
-  print(object, ...)
-  plot(gridExtra::grid.arrange(p.trace, p.bag, nrow = 2))
+  summary.randomForest(object)
 }

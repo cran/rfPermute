@@ -13,7 +13,8 @@ plotInbag(x, bins = 10, replace = TRUE, sampsize = NULL, plot = TRUE)
 
 \item{replace}{was sampling done with or without replacement?}
 
-\item{sampsize}{sizes of samples drawn. Either a}
+\item{sampsize}{sizes of samples drawn. Either a single value or vector of 
+sample sizes as long as the number of classes.}
 
 \item{plot}{display the plot?}
 }

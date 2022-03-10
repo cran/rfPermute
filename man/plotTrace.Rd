@@ -4,10 +4,13 @@
 \alias{plotTrace}
 \title{Plot Trace}
 \usage{
-plotTrace(x, plot = TRUE)
+plotTrace(x, pct.correct = TRUE, plot = TRUE)
 }
 \arguments{
 \item{x}{a \code{rfPermute} or \code{randomForest} model object.}
+
+\item{pct.correct}{display y-axis as percent correctly classified 
+(\code{TRUE}) or OOB error rate (\code{FALSE}).}
 
 \item{plot}{display the plot?}
 }

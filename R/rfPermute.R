@@ -255,6 +255,7 @@ print.rfPermute <- function(x, ...) {
   } else {
     cat("\n")
     print(confusionMatrix(x))
+    cat("\n")
   }
   options(op)
 }

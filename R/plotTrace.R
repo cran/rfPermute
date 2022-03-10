@@ -3,6 +3,8 @@
 #'   (regression) error rate by number of trees.
 #' 
 #' @param x a \code{rfPermute} or \code{randomForest} model object.
+#' @param pct.correct display y-axis as percent correctly classified 
+#'   (\code{TRUE}) or OOB error rate (\code{FALSE}).
 #' @param plot display the plot?
 #'   
 #' @return the \code{ggplot2} object is invisibly returned.
@@ -18,7 +20,7 @@
 #' 
 #' @export
 #'
-plotTrace <- function(x, plot = TRUE) {
+plotTrace <- function(x, pct.correct = TRUE, plot = TRUE) {
   rf <- as.randomForest(x)
   p <- if(utils::hasName(rf, "err.rate")) {
     class.cols <- c("black", scales::hue_pal()(nlevels(rf$y)))
@@ -29,12 +31,18 @@ plotTrace <- function(x, plot = TRUE) {
     df %>% 
       dplyr::mutate(trees = 1:dplyr::n()) %>% 
       tidyr::gather("class", "error", -.data$trees) %>% 
-      dplyr::mutate(class = factor(.data$class, levels = colnames(df))) %>% 
+      dplyr::mutate(
+        class = factor(.data$class, levels = colnames(df)),
+        error = if(pct.correct) (1 - .data$error) * 100 else .data$error * 100
+      ) %>% 
       ggplot2::ggplot(ggplot2::aes_string("trees", "error", color = "class")) +
       ggplot2::geom_line(ggplot2::aes_string(linetype = "class")) +
       ggplot2::scale_color_manual(values = class.cols) +
       ggplot2::scale_linetype_manual(values = class.lines) +
-      ggplot2::labs(x = "Trees", y = "OOB Error") +
+      ggplot2::labs(
+        x = "Trees", 
+        y = ifelse(pct.correct, "Percent Correct", "OOB Error")
+      ) +
       ggplot2::theme(legend.title = ggplot2::element_blank())
   } else if(utils::hasName(rf, "mse")) {
     data.frame(trees = 1:length(rf$mse), error = rf$mse) %>% 
@@ -45,7 +53,7 @@ plotTrace <- function(x, plot = TRUE) {
   
   if(is.null(p)) {
     stop(
-      "The randomForest model does not have an 'err.rate' matrix or 'mse' vector.",
+      "The randomForest model does not have an 'err.rate' matrix or 'mse' vector. ",
       "Is it the result of a 'randomForest::combine(...)' operation?"
     )
   }
