@@ -32,7 +32,7 @@
 #' @export
 #' 
 balancedSampsize <- function(y, pct = 0.5) {
-  if(!swfscMisc::isBetween(pct, 0, 1)) {
+  if(!dplyr::between(pct, 0, 1)) {
     stop("'pct' must be between 0 and 1")
   }
   freq <- table(y)

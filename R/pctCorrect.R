@@ -27,9 +27,9 @@ pctCorrect <- function(x, pct = c(seq(0.8, 0.95, 0.05), 0.99)) {
   
   pct.good <- FALSE
   if(is.numeric(pct)) {
-    zero.one <- all(swfscMisc::isBetween(pct, 0, 1, include.ends = TRUE))
+    zero.one <- all(dplyr::between(pct, 0, 1))
     if(zero.one) pct.good <- TRUE
-    zero.hundred <- all(swfscMisc::isBetween(pct, 0, 100, include.ends = TRUE))
+    zero.hundred <- all(dplyr::between(pct, 0, 100))
     if(zero.hundred & !zero.one) {
       pct <- pct / 100
       pct.good <- TRUE

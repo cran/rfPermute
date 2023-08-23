@@ -1,7 +1,10 @@
+#' \code{rfPermute} package
+#' 
+#' Random Forest Predictor Importance Significance and Model Diagnostics.
+#' 
+#' @aliases rfPermute-package
 #' @docType package
 #' @name rfPermute_package 
-#' @title rfPermute model object
-#' @description Container for rfPermute results
 #' 
 #' @importFrom randomForest randomForest
 #' @importFrom rlang .data

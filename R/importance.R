@@ -171,7 +171,7 @@ plotImportance <- function(x, plot.type = c("bar", "heatmap"), imp.type = NULL,
     preds <- rownames(imp.mat)
     imp.val <- if(rf$type == "regression") "%IncMSE" else "MeanDecreaseAccuracy"
     preds <- preds[order(imp.mat[, imp.val])]
-    preds <- preds[1:n]
+    preds <- rev(rev(preds)[1:n])
     imp.df <- data.frame(imp.mat[preds, imp.type, drop = FALSE], check.names = FALSE)
     if(ranks) for(i in imp.type) imp.df[[i]] <- rank(-imp.df[[i]])
     imp.df <- imp.df %>% 

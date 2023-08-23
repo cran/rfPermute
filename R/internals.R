@@ -21,6 +21,7 @@
 # Calculate importance p-values from null distribution and observed importances
 # x: a list with randomForest elements and $null.dist 
 .calcImpPval <- function(rf, null.dist) {
+  
   calcPval <- function(obs, null) {
     t(sapply(1:nrow(null), function(i) {
       sapply(1:ncol(null), function(j) swfscMisc::pVal(obs[i, j], null[i, j, ]))

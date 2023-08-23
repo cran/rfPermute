@@ -59,11 +59,15 @@ devtools::install_github('EricArcher/rfPermute')
 
 ## Changelog
 
-### version 2.5.1 (devel)
+### version 2.5.2 (devel)
+
+* fixed bug in plotImportance heatmap to now properly choose top rather than bottom `n` predictors.
+
+### version 2.5.1 (CRAN)
 
 * added `pct.correct` argument to `plotTrace()`. Default is now to have y-axis as 1 - OOB error rate.
 
-### version 2.5 (CRAN)
+### version 2.5
 
 __NOTE__: v2.5 is a large redevelopment of the package. The structure of rfPermute model objects has changed make them incompatible with previous versions. Also, the name and functionality of several functions has changed to make them more consistent with one another.
 A tutorial (under construction) is available within the package as `rfPermuteTutorial()`.

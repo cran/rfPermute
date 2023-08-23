@@ -4,11 +4,12 @@
 \name{rfPermute_package}
 \alias{rfPermute_package}
 \alias{rfPermuteTutorial}
-\title{rfPermute model object}
+\alias{rfPermute-package}
+\title{\code{rfPermute} package}
 \usage{
 rfPermuteTutorial()
 }
 \description{
-Container for rfPermute results
+Random Forest Predictor Importance Significance and Model Diagnostics.
 }
 \keyword{package}
