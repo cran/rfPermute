@@ -7,6 +7,7 @@
 \alias{as.randomForest}
 \alias{print.rfPermute}
 \alias{predict.rfPermute}
+\alias{rfPermuteTutorial}
 \title{Estimate Permutation p-values for Random Forest Importance Metrics}
 \usage{
 rfPermute(x, ...)
@@ -28,9 +29,11 @@ as.randomForest(x)
 \method{print}{rfPermute}(x, ...)
 
 \method{predict}{rfPermute}(object, ...)
+
+rfPermuteTutorial()
 }
 \arguments{
-\item{x, y, formula, data, subset, na.action, \dots}{See \code{\link{randomForest}} 
+\item{x, y, formula, data, subset, na.action, \dots}{See \code{\link[randomForest]{randomForest}} 
 for definitions. In \code{as.randomForest} this is either a 
 \code{randomForest} or \code{rfPermute} object to be converted to a
 \code{randomForest} object.}

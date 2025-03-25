@@ -49,14 +49,6 @@ plotInbag <- function(x, bins = 10, replace = TRUE, sampsize = NULL,
     }
   }
   
-  pct <- ((rf$ntree - rf$oob.times) / rf$ntree) * 100
-  p <- ggplot2::ggplot(data.frame(pct = pct), ggplot2::aes_string("pct")) +
-    ggplot2::geom_histogram(bins = max(bins, floor(length(pct) / 5))) +
-    ggplot2::labs(
-      x = "Percent of trees where sample was inbag",
-      y = "Frequency"
-    )
-  
   n <- length(rf$y)
   if(is.null(sampsize)) sampsize <- if(replace) n else ceiling(0.632 * n)
   
@@ -76,7 +68,17 @@ plotInbag <- function(x, bins = 10, replace = TRUE, sampsize = NULL,
   } else {
     as.vector(sampsize / table(rf$y)) * 100
   }
-  p <- p + ggplot2::geom_vline(xintercept = exp.pct, color = "red")
+  
+  pct <- ((rf$ntree - rf$oob.times) / rf$ntree) * 100
+  bins <- max(bins, floor(length(pct) / 5))
+  p <- data.frame(pct = pct) |> 
+    ggplot2::ggplot(ggplot2::aes_string("pct")) +
+    ggplot2::geom_histogram(bins = bins) +
+    ggplot2::labs(
+      x = "Percent of trees where sample was inbag",
+      y = "Frequency"
+    ) + 
+    ggplot2::geom_vline(xintercept = exp.pct, color = "red")
   
   if(plot) print(p)
   invisible(p)

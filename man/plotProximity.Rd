@@ -62,7 +62,7 @@ Setting to \code{0} produces no shading.}
 \value{
 a list with: 
  \item{prox.mds}{the MDS scores of the selected dimensions} 
- \item{g}{\code{\link{ggplot}} object}
+ \item{g}{a \code{ggplot2} object}
 }
 \description{
 Create a plot of Random Forest proximity scores using 

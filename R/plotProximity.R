@@ -31,7 +31,7 @@
 #'   
 #' @return a list with: 
 #'  \item{prox.mds}{the MDS scores of the selected dimensions} 
-#'  \item{g}{\code{\link{ggplot}} object}
+#'  \item{g}{a \code{ggplot2} object}
 #' 
 #' @author Eric Archer \email{eric.archer@@noaa.gov}
 #' 

@@ -28,7 +28,7 @@
 #' 
 summary.randomForest <- function(object, ...) {
   print(object, ...)
-  print(plotTrace(object, plot = F))
+  print(plotTrace(object, plot = FALSE))
 }
 
 #' @rdname summary

@@ -4,7 +4,7 @@
 #'   model by permuting the response variable. Produces null distribution of 
 #'   importance metrics for each predictor variable and p-value of observed.
 #'
-#' @param x,y,formula,data,subset,na.action,\dots See \code{\link{randomForest}} 
+#' @param x,y,formula,data,subset,na.action,\dots See \code{\link[randomForest]{randomForest}} 
 #'   for definitions. In \code{as.randomForest} this is either a 
 #'   \code{randomForest} or \code{rfPermute} object to be converted to a
 #'   \code{randomForest} object.
@@ -224,33 +224,34 @@ as.randomForest <- function(x) {
 #' 
 print.rfPermute <- function(x, ...) {
   op <- options(digits = 3)
+  rf <- x$rf
   cat("An rfPermute model\n\n")
-  cat("               Type of random forest:", x$rf$type, "\n")
-  cat("                     Number of trees:", x$rf$ntree, "\n")
-  cat("No. of variables tried at each split:", x$rf$mtry, "\n")
+  cat("               Type of random forest:", rf$type, "\n")
+  cat("                     Number of trees:", rf$ntree, "\n")
+  cat("No. of variables tried at each split:", rf$mtry, "\n")
   cat("       No. of permutation replicates:", x$num.rep, "\n")
   cat("                          Start time:", format(x$start), "\n")
   cat("                            End time:", format(x$end), "\n")
   cat("                            Run time:", format(difftime(x$end, x$start), digits = 3), "\n")
 
-  if(x$rf$type == "regression") {
-    if (!is.null(x$mse)) {
+  if(rf$type == "regression") {
+    if (!is.null(rf$mse)) {
       cat("\n")
-      cat("          Mean of squared residuals:", x$rf$mse[length(x$mse)], "\n")
-      pct.var <- round(100 * x$rsq[length(x$rsq)], digits = 2)
+      cat("          Mean of squared residuals:", rf$mse[length(rf$mse)], "\n")
+      pct.var <- round(100 * rf$rsq[length(rf$rsq)], digits = 2)
       cat("                    % Var explained:", pct.var, "\n")
-      if (!is.null(x$test$mse)) {
-        test.mse <- round(x$test$mse[length(x$test$mse)], digits = 2)
+      if (!is.null(rf$test$mse)) {
+        test.mse <- round(rf$test$mse[length(rf$test$mse)], digits = 2)
         cat("                       Test set MSE:", test.mse, "\n")
-        pct.var.exp <- round(100 * x$test$rsq[length(x$test$rsq)], digits = 2)
+        pct.var.exp <- round(100 * rf$test$rsq[length(rf$test$rsq)], digits = 2)
         cat("                    % Var explained:", pct.var.exp, "\n")
       }
     }
-    if (!is.null(x$coefs)) {
+    if (!is.null(x$rf$coefs)) {
       cat("\n")
       cat("  Bias correction applied:\n")
-      cat("  Intercept:", x$coefs[1], "\n")
-      cat("      Slope:", x$coefs[2], "\n")
+      cat("  Intercept:", rf$coefs[1], "\n")
+      cat("      Slope:", rf$coefs[2], "\n")
     }
   } else {
     cat("\n")
@@ -266,3 +267,12 @@ print.rfPermute <- function(x, ...) {
 #' @export
 #' 
 predict.rfPermute <- function(object, ...) predict(as.randomForest(object), ...)
+
+
+#' @rdname rfPermute
+#' @importFrom stats predict
+#' @export
+#' 
+rfPermuteTutorial <- function() {
+  utils::browseURL(system.file("rfPermute_Tutorial.html", package = "rfPermute"))
+}
