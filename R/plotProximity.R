@@ -153,12 +153,12 @@ plotProximity <- function(x, dim.x = 1, dim.y = 2, class.cols = NULL,
   if(legend.type == "label") {
     g <- g + ggplot2::geom_label(
       ggplot2::aes_(label = ~class), 
-      data = mds.df %>% 
-        dplyr::group_by(.data$class) %>% 
+      data = mds.df |> 
+        dplyr::group_by(.data$class) |> 
         dplyr::summarize(
           x = mean(.data$x),
           y = mean(.data$y)
-        ) %>% 
+        ) |> 
         dplyr::ungroup(),
       fill = "white",
       alpha = label.alpha,

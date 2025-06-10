@@ -88,8 +88,8 @@ plotConfMat <- function(x, title = NULL, plot = TRUE) {
   if(rf$type == "regression") stop("'rf' must be of a classification model")
   
   conf <- .confMat(rf)
-  pct.correct <- (100 * sum(diag(conf)) / sum(conf)) %>% 
-    round(0) %>% 
+  pct.correct <- (100 * sum(diag(conf)) / sum(conf)) |> 
+    round(0) |> 
     paste0("% correct")
   title <- if(is.null(title)) {
     pct.correct 
@@ -99,16 +99,16 @@ plotConfMat <- function(x, title = NULL, plot = TRUE) {
   freq <- rowSums(conf)
   rownames(conf) <- paste0(names(freq), " (", freq, ")")
   
-  p <- conf %>% 
-    prop.table(1) %>% 
-    as.data.frame %>% 
-    tibble::rownames_to_column("observed") %>% 
-    tidyr::gather("predicted", "prop", -.data$observed) %>% 
+  p <- conf |> 
+    prop.table(1) |> 
+    as.data.frame() |> 
+    tibble::rownames_to_column("observed") |> 
+    tidyr::gather("predicted", "prop", -.data$observed) |> 
     dplyr::mutate(
       observed = factor(.data$observed),
       observed = stats::reorder(.data$observed, dplyr::desc(.data$observed)),
       predicted = factor(.data$predicted)
-    ) %>% 
+    ) |> 
     ggplot2::ggplot(ggplot2::aes_string("predicted", "observed")) +
     ggplot2::geom_raster(ggplot2::aes_string(fill = "prop")) +
     ggplot2::scale_fill_viridis_c(

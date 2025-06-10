@@ -68,9 +68,9 @@ plotImpPreds <- function(x, df, class.col, imp.type = NULL, max.vars = 16,
   df$.class. <- factor(df[[class.col]])
   df <- df[, c(".class.", imp.vars)]
   
-  p <- df %>%
-    tidyr::pivot_longer(-.data$.class., names_to = "var") %>% 
-    dplyr::mutate(var = factor(.data$var, levels = imp.vars)) %>% 
+  p <- df |>
+    tidyr::pivot_longer(-.data$.class., names_to = "var") |> 
+    dplyr::mutate(var = factor(.data$var, levels = imp.vars)) |> 
     ggplot2::ggplot(ggplot2::aes_string(".class.", "value")) +
     ggplot2::geom_violin(alpha = violin.alpha) +
     ggplot2::geom_jitter(size = size, alpha = point.alpha, width = 0.25, height = 0) +

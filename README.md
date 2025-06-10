@@ -6,7 +6,7 @@
 [![R-CMD-check](https://github.com/EricArcher/rfPermute/workflows/R-CMD-check/badge.svg)](https://github.com/EricArcher/rfPermute/actions)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/EricArcher/rfPermute?branch=master&svg=true)](https://ci.appveyor.com/project/EricArcher/rfPermute)
 
-# rfPermute [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5532822.svg)](https://doi.org/10.5281/zenodo.5532822)
+# rfPermute [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15085006.svg)](https://doi.org/10.5281/zenodo.15085006)
 
 ## Description
 `rfPermute` estimates the significance of importance metrics for a Random Forest model by permuting the response variable. It will produce null distributions of importance metrics for each predictor variable and _p_-values of observed importances. The package also includes several summary and visualization functions for `randomForest` and `rfPermute` results. See `rfPermuteTutorial()` in the package for a guide on running, summarizing, and diagnosing `rfPermute` and `randomForest` models.
@@ -58,6 +58,10 @@ devtools::install_github('EricArcher/rfPermute')
 * `cleanRFdata` Clean Random Forest Input Data  
 
 ## Changelog
+
+### version 2.5.5 (on CRAN)
+
+* move of package to SWFSC/rfPermute as main GitHub repository
 
 ### version 2.5.4 (on CRAN)
 

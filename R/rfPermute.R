@@ -270,7 +270,6 @@ predict.rfPermute <- function(object, ...) predict(as.randomForest(object), ...)
 
 
 #' @rdname rfPermute
-#' @importFrom stats predict
 #' @export
 #' 
 rfPermuteTutorial <- function() {

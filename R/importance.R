@@ -137,12 +137,12 @@ plotImportance <- function(x, plot.type = c("bar", "heatmap"), imp.type = NULL,
         pval = if(inherits(x, "rfPermute")) {
           x$pval[rownames(imp.mat), i, sc]
         } else Inf
-      ) %>% 
-        tibble::rownames_to_column("pred") %>% 
+      ) |> 
+        tibble::rownames_to_column("pred") |> 
         dplyr::mutate(
           is.sig = .data$pval <= alpha,
           pred = stats::reorder(.data$pred, .data$imp)
-        ) %>% 
+        ) |> 
         dplyr::arrange(-.data$imp)
       if(sig.only) imp.df <- imp.df[imp.df$is.sig, ]
       n <- min(n, nrow(imp.df))
@@ -174,9 +174,9 @@ plotImportance <- function(x, plot.type = c("bar", "heatmap"), imp.type = NULL,
     preds <- rev(rev(preds)[1:n])
     imp.df <- data.frame(imp.mat[preds, imp.type, drop = FALSE], check.names = FALSE)
     if(ranks) for(i in imp.type) imp.df[[i]] <- rank(-imp.df[[i]])
-    imp.df <- imp.df %>% 
-      tibble::rownames_to_column("pred") %>% 
-      tidyr::pivot_longer(-.data$pred, names_to = "type") %>% 
+    imp.df <- imp.df |> 
+      tibble::rownames_to_column("pred") |> 
+      tidyr::pivot_longer(-.data$pred, names_to = "type") |> 
       dplyr::mutate(
         type = factor(.data$type, levels = imp.type),
         pred = factor(.data$pred, levels = preds)

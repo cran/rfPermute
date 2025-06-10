@@ -65,14 +65,14 @@ plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE,
       imp.type
     )
     
-    df <- sapply(imp.type, function(i) x$null.dist[[sc]][pr, i, ]) %>% 
-      as.data.frame() %>% 
-      tidyr::gather("imp.type", "importance") %>% 
+    df <- sapply(imp.type, function(i) x$null.dist[[sc]][pr, i, ]) |> 
+      as.data.frame() |> 
+      tidyr::gather("imp.type", "importance") |> 
       dplyr::mutate(imp.type = factor(labels[imp.type], levels = labels))
-    obs <- imp[pr, imp.type, drop = FALSE] %>% 
-      as.data.frame() %>% 
-      tibble::rownames_to_column("predictor") %>% 
-      tidyr::gather("imp.type", "importance", -.data$predictor) %>% 
+    obs <- imp[pr, imp.type, drop = FALSE] |> 
+      as.data.frame() |> 
+      tibble::rownames_to_column("predictor") |> 
+      tidyr::gather("imp.type", "importance", -.data$predictor) |> 
       dplyr::mutate(imp.type = factor(labels[imp.type], levels = labels))
     
     p <- ggplot2::ggplot(df, ggplot2::aes_string("importance")) 
