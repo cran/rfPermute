@@ -75,7 +75,7 @@ plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE,
       tidyr::gather("imp.type", "importance", -.data$predictor) |> 
       dplyr::mutate(imp.type = factor(labels[imp.type], levels = labels))
     
-    p <- ggplot2::ggplot(df, ggplot2::aes_string("importance")) 
+    p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$importance)) 
     p <- if(plot.type == "hist") {
         p + ggplot2::geom_histogram() + ggplot2::ylab("Count")
       } else {
@@ -85,7 +85,7 @@ plotNull <- function(x, preds = NULL, imp.type = NULL, scale = TRUE,
       ggplot2::xlab("Importance") + 
       ggplot2::ggtitle(pr) +
       ggplot2::geom_vline(
-        ggplot2::aes_string(xintercept = "importance"), 
+        ggplot2::aes(xintercept = .data$importance), 
         color = "red", data = obs
       ) +
       ggplot2::facet_wrap(~ imp.type, scales = "free")

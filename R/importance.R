@@ -151,7 +151,7 @@ plotImportance <- function(x, plot.type = c("bar", "heatmap"), imp.type = NULL,
       
       ggplot2::ggplot(
         imp.df, 
-        ggplot2::aes_string(x = "pred", y = "imp", fill = "is.sig") 
+        ggplot2::aes(x = .data$pred, y = .data$imp, fill = .data$is.sig) 
       ) + 
         ggplot2::geom_bar(stat = "identity") +
         ggplot2::coord_flip() + 
@@ -183,8 +183,8 @@ plotImportance <- function(x, plot.type = c("bar", "heatmap"), imp.type = NULL,
       )
     
     # create plot
-    g <- ggplot2::ggplot(imp.df, ggplot2::aes_string("type", "pred")) +
-      ggplot2::geom_raster(ggplot2::aes_string(fill = "value")) + 
+    g <- ggplot2::ggplot(imp.df, ggplot2::aes(x = .data$type, y = .data$pred)) +
+      ggplot2::geom_raster(ggplot2::aes(fill = .data$value)) + 
       ggplot2::theme(panel.background = ggplot2::element_blank())
     g <- g + if(ranks) {
       ggplot2::scale_fill_gradient2(

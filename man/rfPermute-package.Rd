@@ -18,5 +18,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Eric Archer \email{eric.ivan.archer@gmail.com}
 
+Authors:
+\itemize{
+  \item Eric Archer \email{eric.ivan.archer@gmail.com}
+}
+
 }
 \keyword{internal}
